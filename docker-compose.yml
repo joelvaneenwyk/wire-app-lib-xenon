@@ -1,4 +1,7 @@
-version: '3.8'
+#
+# Wire App | Xenon
+#
+
 services:
   db:
     image: postgres:15
