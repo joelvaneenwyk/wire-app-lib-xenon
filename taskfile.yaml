@@ -1,0 +1,38 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task: build
+
+  build:
+    preconditions:
+      - mvn --version
+    cmds:
+      - cmd: |
+          mvn -B verify
+
+  db:
+    deps: [stop-db]
+    cmds:
+      - cmd: |
+          docker-compose up -d db
+
+  stop-db:
+    cmds:
+      - cmd: |
+          docker-compose stop db
+        ignore_error: true
+
+  test:
+    deps: [db]
+    cmds:
+      - cmd: |
+          export POSTGRES_USER=postgres && export POSTGRES_PASSWORD=postgres && export POSTGRES_URL=localhost:5432/postgres && mvn test;
+
+  publish:
+    cmds:
+      - cmd: |
+          mvn -DskipTests clean deploy
