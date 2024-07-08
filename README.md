@@ -6,7 +6,7 @@ Wire Bots base library
 
 - In your `pom.xml`:
 
-```
+```xml
 <dependencies>
     <dependency>
         <groupId>com.wire</groupId>
