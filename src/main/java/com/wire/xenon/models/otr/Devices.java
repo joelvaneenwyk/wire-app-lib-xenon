@@ -20,11 +20,11 @@ package com.wire.xenon.models.otr;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Collection;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Devices {
+
     @JsonProperty
     public final Missing missing = new Missing();
 
@@ -40,8 +40,7 @@ public class Devices {
 
     public int size() {
         int ret = 0;
-        for (Collection<String> cls : missing.values())
-            ret += cls.size();
+        for (Collection<String> cls : missing.values()) ret += cls.size();
         return ret;
     }
 }

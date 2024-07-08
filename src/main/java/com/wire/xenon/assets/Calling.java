@@ -1,10 +1,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class Calling implements IGeneric {
+
     private final String content;
     private final UUID messageId = UUID.randomUUID();
 
@@ -15,14 +15,11 @@ public class Calling implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         Messages.GenericMessage.Builder ret = Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString());
+            .setMessageId(getMessageId().toString());
 
-        Messages.Calling.Builder calling = Messages.Calling.newBuilder()
-                .setContent(content);
+        Messages.Calling.Builder calling = Messages.Calling.newBuilder().setContent(content);
 
-        return ret
-                .setCalling(calling)
-                .build();
+        return ret.setCalling(calling).build();
     }
 
     @Override

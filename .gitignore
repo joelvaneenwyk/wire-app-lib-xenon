@@ -1,8 +1,14 @@
+#
+# wire-app-lib-xenon | Ignore List
+#
 # Created by .gitignore support plugin (hsz.mobi)
-### Java template
+#
 
-.idea/
+.git/
+
 *.iml
+!/xenon.iml
+
 target/
 data/
 libs/
@@ -10,3 +16,20 @@ libs/
 .project
 .settings
 .DS_Store
+
+build/
+.gradle/
+lib/
+
+node_modules/
+bun.lock
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+tsconfig.json
+.prettierrc.yaml
+package.json
+*.ts
+
+out/
+.m2/

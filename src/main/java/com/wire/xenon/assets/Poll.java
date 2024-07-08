@@ -19,11 +19,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
-
 public class Poll implements IGeneric {
+
     private final Messages.Composite.Builder poll;
     private final UUID messageId;
 
@@ -42,33 +41,25 @@ public class Poll implements IGeneric {
     }
 
     public Poll addText(String str) {
-        Messages.Text.Builder text = Messages.Text.newBuilder()
-                .setContent(str);
+        Messages.Text.Builder text = Messages.Text.newBuilder().setContent(str);
 
-        Messages.Composite.Item textItem = Messages.Composite.Item.newBuilder()
-                .setText(text)
-                .build();
+        Messages.Composite.Item textItem = Messages.Composite.Item.newBuilder().setText(text).build();
 
         poll.addItems(textItem);
         return this;
     }
 
     public Poll addText(MessageText msg) {
-        Messages.Composite.Item textItem = Messages.Composite.Item.newBuilder()
-                .setText(msg.getBuilder())
-                .build();
+        Messages.Composite.Item textItem = Messages.Composite.Item.newBuilder().setText(msg.getBuilder()).build();
 
         poll.addItems(textItem);
         return this;
     }
 
     public Poll addButton(String buttonId, String caption) {
-        Messages.Button.Builder button = Messages.Button.newBuilder()
-                .setText(caption)
-                .setId(buttonId);
+        Messages.Button.Builder button = Messages.Button.newBuilder().setText(caption).setId(buttonId);
 
-        Messages.Composite.Item.Builder buttonItem = Messages.Composite.Item.newBuilder()
-                .setButton(button);
+        Messages.Composite.Item.Builder buttonItem = Messages.Composite.Item.newBuilder().setButton(button);
 
         poll.addItems(buttonItem);
         return this;
@@ -76,15 +67,11 @@ public class Poll implements IGeneric {
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setComposite(poll)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setComposite(poll).build();
     }
 
     @Override
     public UUID getMessageId() {
         return messageId;
     }
-
 }

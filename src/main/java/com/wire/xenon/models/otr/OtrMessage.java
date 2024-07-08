@@ -19,18 +19,17 @@
 package com.wire.xenon.models.otr;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 public class OtrMessage {
+
     @JsonProperty
     @NotNull
     private final String sender; //clientId of the sender
 
     @JsonProperty
     private final Recipients recipients;
-
 
     public OtrMessage(String clientId, Recipients recipients) {
         this.sender = clientId;

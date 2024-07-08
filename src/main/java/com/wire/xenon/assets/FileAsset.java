@@ -18,16 +18,14 @@
 
 package com.wire.xenon.assets;
 
-import com.google.protobuf.ByteString;
-import com.waz.model.Messages;
 import com.wire.xenon.tools.Util;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
 public class FileAsset extends AssetBase {
+
     public FileAsset(File file, String mimeType, UUID messageId) throws Exception {
         super(messageId, mimeType, readFile(file));
     }

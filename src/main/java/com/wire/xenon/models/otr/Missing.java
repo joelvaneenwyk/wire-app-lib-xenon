@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 //<UserId, [ClientId]>
 public class Missing extends ConcurrentHashMap<UUID, Collection<String>> {
+
     public Collection<String> toClients(UUID userId) {
         return get(userId);
     }

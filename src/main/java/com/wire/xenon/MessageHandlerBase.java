@@ -25,7 +25,6 @@ import com.wire.xenon.backend.models.SystemMessage;
 import com.wire.xenon.models.*;
 import com.wire.xenon.models.otr.PreKey;
 import com.wire.xenon.tools.Logger;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.UUID;
@@ -54,17 +53,11 @@ public abstract class MessageHandlerBase {
      * @param client  Thread safe wire client that can be used to post back to this conversation
      * @param message SystemMessage object. message.conversation is never null
      */
-    public void onNewConversation(WireClient client, SystemMessage message) {
+    public void onNewConversation(WireClient client, SystemMessage message) {}
 
-    }
+    public void onConversationRename(WireClient client, SystemMessage systemMessage) {}
 
-    public void onConversationRename(WireClient client, SystemMessage systemMessage) {
-
-    }
-
-    public void onConversationDelete(UUID botId, SystemMessage systemMessage) {
-
-    }
+    public void onConversationDelete(UUID botId, SystemMessage systemMessage) {}
 
     /**
      * This callback is invoked by the framework every time connection request is received
@@ -96,15 +89,13 @@ public abstract class MessageHandlerBase {
      * @param client  Thread safe wire client that can be used to post back to this conversation
      * @param message System message object with `message.users` as List of UserIds that just joined this conversation
      */
-    public void onMemberJoin(WireClient client, SystemMessage message) {
-    }
+    public void onMemberJoin(WireClient client, SystemMessage message) {}
 
     /**
      * @param client  Thread safe wire client that can be used to post back to this conversation
      * @param message System message object with `message.users` as List of UserIds that just joined this conversation
      */
-    public void onMemberLeave(WireClient client, SystemMessage message) {
-    }
+    public void onMemberLeave(WireClient client, SystemMessage message) {}
 
     /**
      * This callback is called when this bot gets removed from the conversation
@@ -112,8 +103,7 @@ public abstract class MessageHandlerBase {
      * @param botId Identifier of the Bot that got removed
      * @param msg   System message
      */
-    public void onBotRemoved(UUID botId, SystemMessage msg) {
-    }
+    public void onBotRemoved(UUID botId, SystemMessage msg) {}
 
     /**
      * @param newBot Initial State
@@ -151,8 +141,7 @@ public abstract class MessageHandlerBase {
      * @param client Thread safe wire client that can be used to post back to this conversation
      * @param msg    Message containing text
      */
-    public void onText(WireClient client, TextMessage msg) {
-    }
+    public void onText(WireClient client, TextMessage msg) {}
 
     /**
      * This is generic method that is called every time something is posted to this conversation.
@@ -161,8 +150,7 @@ public abstract class MessageHandlerBase {
      * @param userId         User Id for the sender
      * @param genericMessage Generic message as it comes from the BE
      */
-    public void onEvent(WireClient client, UUID userId, Messages.GenericMessage genericMessage) {
-    }
+    public void onEvent(WireClient client, UUID userId, Messages.GenericMessage genericMessage) {}
 
     /**
      * Called when user edits previously sent message
@@ -170,33 +158,19 @@ public abstract class MessageHandlerBase {
      * @param client Thread safe wire client that can be used to post back to this conversation
      * @param msg    New Message containing replacing messageId
      */
-    public void onEditText(WireClient client, EditedTextMessage msg) {
+    public void onEditText(WireClient client, EditedTextMessage msg) {}
 
-    }
+    public void onCalling(WireClient client, CallingMessage msg) {}
 
-    public void onCalling(WireClient client, CallingMessage msg) {
+    public void onDelete(WireClient client, DeletedTextMessage msg) {}
 
-    }
+    public void onReaction(WireClient client, ReactionMessage msg) {}
 
-    public void onDelete(WireClient client, DeletedTextMessage msg) {
+    public void onNewTeamMember(WireClient userClient, UUID userId) {}
 
-    }
+    public void onUserUpdate(UUID id, UUID userId) {}
 
-    public void onReaction(WireClient client, ReactionMessage msg) {
-
-    }
-
-    public void onNewTeamMember(WireClient userClient, UUID userId) {
-
-    }
-
-    public void onUserUpdate(UUID id, UUID userId) {
-
-    }
-
-    public void onPing(WireClient client, PingMessage msg) {
-
-    }
+    public void onPing(WireClient client, PingMessage msg) {}
 
     /**
      * This method is called when ephemeral text is posted into the conversation
@@ -204,19 +178,16 @@ public abstract class MessageHandlerBase {
      * @param client Thread safe wire client that can be used to post back to this conversation
      * @param msg    Message containing text and expiration time
      */
-    public void onText(WireClient client, EphemeralTextMessage msg) {
-    }
+    public void onText(WireClient client, EphemeralTextMessage msg) {}
 
-    public void onConfirmation(WireClient client, ConfirmationMessage msg) {
-
-    }
+    public void onConfirmation(WireClient client, ConfirmationMessage msg) {}
 
     public void validatePreKeys(WireClient client, int size) {
         try {
             int minAvailable = 8 * size;
             if (minAvailable > 0) {
                 ArrayList<Integer> availablePrekeys = client.getAvailablePrekeys();
-                availablePrekeys.remove(Integer.valueOf(65535));  //remove the last prekey
+                availablePrekeys.remove(Integer.valueOf(65535)); //remove the last prekey
                 if (!availablePrekeys.isEmpty() && availablePrekeys.size() < minAvailable) {
                     Integer lastKeyOffset = Collections.max(availablePrekeys);
                     ArrayList<PreKey> keys = client.newPreKeys(lastKeyOffset + 1, minAvailable);
@@ -229,34 +200,20 @@ public abstract class MessageHandlerBase {
         }
     }
 
-    public void onPhotoPreview(WireClient client, PhotoPreviewMessage msg) {
+    public void onPhotoPreview(WireClient client, PhotoPreviewMessage msg) {}
 
-    }
+    public void onAssetData(WireClient client, RemoteMessage msg) {}
 
-    public void onAssetData(WireClient client, RemoteMessage msg) {
+    public void onFilePreview(WireClient client, FilePreviewMessage msg) {}
 
-    }
+    public void onAudioPreview(WireClient client, AudioPreviewMessage msg) {}
 
-    public void onFilePreview(WireClient client, FilePreviewMessage msg) {
+    public void onVideoPreview(WireClient client, VideoPreviewMessage msg) {}
 
-    }
-
-    public void onAudioPreview(WireClient client, AudioPreviewMessage msg) {
-
-    }
-
-    public void onVideoPreview(WireClient client, VideoPreviewMessage msg) {
-
-    }
-
-    public void onLinkPreview(WireClient client, LinkPreviewMessage msg) {
-
-    }
+    public void onLinkPreview(WireClient client, LinkPreviewMessage msg) {}
 
     public void onButtonClick(WireClient client, ButtonActionMessage msg) {
-        ButtonActionConfirmation confirmation = new ButtonActionConfirmation(
-                msg.getReference(),
-                msg.getButtonId());
+        ButtonActionConfirmation confirmation = new ButtonActionConfirmation(msg.getReference(), msg.getButtonId());
 
         try {
             client.send(confirmation, msg.getUserId());

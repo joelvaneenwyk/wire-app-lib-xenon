@@ -1,10 +1,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class MessageDelete implements IGeneric {
+
     private final UUID delMessageId;
     private final UUID messageId = UUID.randomUUID();
 
@@ -14,13 +14,9 @@ public class MessageDelete implements IGeneric {
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-        Messages.MessageDelete.Builder del = Messages.MessageDelete.newBuilder()
-                .setMessageId(delMessageId.toString());
+        Messages.MessageDelete.Builder del = Messages.MessageDelete.newBuilder().setMessageId(delMessageId.toString());
 
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setDeleted(del)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setDeleted(del).build();
     }
 
     @Override

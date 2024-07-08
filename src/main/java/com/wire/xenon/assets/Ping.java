@@ -19,21 +19,17 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class Ping implements IGeneric {
+
     private final UUID messageId = UUID.randomUUID();
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-        Messages.Knock.Builder knock = Messages.Knock.newBuilder()
-                .setHotKnock(false);
+        Messages.Knock.Builder knock = Messages.Knock.newBuilder().setHotKnock(false);
 
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setKnock(knock)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setKnock(knock).build();
     }
 
     @Override

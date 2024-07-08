@@ -20,10 +20,10 @@ package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
 import com.wire.xenon.tools.Logger;
-
 import java.util.UUID;
 
 public class LinkPreview implements IGeneric {
+
     private final String url;
     private final String title;
     private final ImageAsset thumbnail;
@@ -46,28 +46,26 @@ public class LinkPreview implements IGeneric {
 
         // Legacy todo: remove it!
         Messages.Article article = Messages.Article.newBuilder()
-                .setTitle(title)
-                .setPermanentUrl(url)
-                .setImage(preview)
-                .build();
+            .setTitle(title)
+            .setPermanentUrl(url)
+            .setImage(preview)
+            .build();
         // Legacy
 
         Messages.LinkPreview.Builder linkPreview = Messages.LinkPreview.newBuilder()
-                .setUrl(url)
-                .setUrlOffset(0)
-                .setImage(preview)
-                .setPermanentUrl(url)
-                .setTitle(title)
-                .setArticle(article);
+            .setUrl(url)
+            .setUrlOffset(0)
+            .setImage(preview)
+            .setPermanentUrl(url)
+            .setTitle(title)
+            .setArticle(article);
 
-        Messages.Text.Builder text = Messages.Text.newBuilder()
-                .setContent(url)
-                .addLinkPreview(linkPreview);
+        Messages.Text.Builder text = Messages.Text.newBuilder().setContent(url).addLinkPreview(linkPreview);
 
         return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setText(text.build())
-                .build();
+            .setMessageId(getMessageId().toString())
+            .setText(text.build())
+            .build();
     }
 
     @Override

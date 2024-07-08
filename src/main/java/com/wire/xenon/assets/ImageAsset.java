@@ -18,18 +18,11 @@
 
 package com.wire.xenon.assets;
 
-import com.google.protobuf.ByteString;
-import com.waz.model.Messages;
 import com.wire.xenon.tools.Util;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
 
 public class ImageAsset extends AssetBase {
+
     private final byte[] imageData;
 
     public ImageAsset(UUID messageId, byte[] imageData, String mime) throws Exception {

@@ -21,6 +21,7 @@ package com.wire.xenon.models;
 import java.util.UUID;
 
 public class MessageBase {
+
     protected final UUID messageId;
     protected final UUID eventId;
     protected final UUID userId;

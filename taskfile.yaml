@@ -1,0 +1,142 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
+  GRADLE_EXE: '{{.TASKFILE_DIR}}/gradlew{{ if eq OS "windows" }}.bat{{end}}'
+  MAVEN_POM: '{{.TASKFILE_DIR}}/pom.xml'
+  MAVEN_EXE:  "scoop/apps/maven/current/bin/mvn.cmd"
+  MVN_SCOOP: "{{ joinPath .USERPROFILE .MAVEN_EXE }}"
+  MVN: '{{ if eq OS "windows" }}set "MAVEN_OPTS=" && call {{.MVN_SCOOP}}{{ else }}mvn{{ end }}'
+  RUN: '{{ if eq OS "windows" }}cmd.exe /D /E:ON /C{{ else }}bash -c{{ end }}'
+
+dotenv: [.env]
+
+tasks:
+  default:
+    desc: Run build
+    cmds:
+      - task: build
+
+  rebuild:
+    desc: Clean and build
+    cmds:
+      - task: clean
+      - task: build
+
+  build:
+    desc: Build the project using both Gradle and Maven
+    cmds:
+      - task: gradle-build
+      - task: maven-build
+
+  clean:
+    desc: Clean all intermediate files using Git and build tools
+    cmds:
+      - cmd: git add .
+      - cmd: git clean -xfd
+
+  test:
+    desc: Run all tests
+    cmds:
+      - task: gradle-test
+
+  gradle-test:
+    aliases: [gt, test-gradle]
+    internal: true
+    deps: [gradle]
+    cmds:
+      - task: db-start
+      - defer: { task: db-stop }
+      - cmd: |
+          "{{ fromSlash .GRADLE_EXE}}" test
+
+  gradle-build:
+    internal: true
+    aliases: [gradle, gradlew, g]
+    cmds:
+      - cmd: >-
+          "{{ fromSlash .GRADLE_EXE }}" clean
+      - cmd: >-
+          "{{ fromSlash .GRADLE_EXE }}" build
+          -x test
+          --no-build-cache
+          --dependency-verification=strict
+          --refresh-dependencies
+          --rerun-tasks
+
+  maven-build:
+    aliases: [mvn, m, maven]
+    cmds:
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" test-compile
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" package -DskipTests
+      - task: maven-test
+
+  maven-test:
+    internal: true
+    aliases: [mt, maven-test, mvn-test]
+    cmds:
+      - task: db-start
+      - defer: { task: db-stop }
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" test
+
+  publish:
+    cmds:
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" -DskipTests clean deploy
+
+  db-start:
+    internal: true
+    cmds:
+      - task: db-stop
+      - cmd: |
+          docker compose up -d db
+
+  db-stop:
+    internal: true
+    cmds:
+      - cmd: |
+          docker compose stop db
+        ignore_error: true
+
+  format:
+    deps: [npm-clean]
+    silent: true
+    cmds:
+      - defer: { task: npm-clean }
+      - cmd: |
+          npm init -y {{.REDIRECT_TO_NULL}}
+        ignore_error: true
+      - cmd: |
+          npm install prettier@latest prettier-plugin-java@latest {{.REDIRECT_TO_NULL}}
+      - cmd: >-
+          "{{ joinPath .TASKFILE_DIR "node_modules" ".bin" "prettier" }}"
+          --single-quote
+          --print-width 120
+          --plugin=prettier-plugin-java
+          --write
+          "{{ .TASKFILE_DIR }}"
+
+  npm-clean:
+    silent: true
+    status:
+      - test ! -f package.json
+      - test ! -f package-lock.json
+      - test ! -d node_modules
+    cmds:
+      - cmd: |
+          rm -rf node_modules package.json package-lock.json
+        platforms: [linux, darwin]
+      - cmd: |
+          cmd.exe /D /E:ON /C rmdir /s /q node_modules {{.REDIRECT_TO_NULL}}
+        platforms: [windows]
+        ignore_error: true
+      - cmd: |
+          cmd.exe /D /E:ON /C del package.json package-lock.json {{.REDIRECT_TO_NULL}}
+        platforms: [windows]
+        ignore_error: true
+      - echo "Removed left-over files from running 'npm' locally."

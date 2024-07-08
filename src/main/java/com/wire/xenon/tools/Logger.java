@@ -28,11 +28,12 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class Logger {
+
     public static java.util.logging.Logger getLOGGER() {
         return LOGGER;
     }
 
-    private final static java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger("com.wire.bots.logger");
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger("com.wire.bots.logger");
     private static final AtomicInteger errorCount = new AtomicInteger();
     private static final AtomicInteger warningCount = new AtomicInteger();
 
@@ -112,6 +113,7 @@ public class Logger {
     }
 
     static class BotFormatter extends Formatter {
+
         private static final DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
         @Override

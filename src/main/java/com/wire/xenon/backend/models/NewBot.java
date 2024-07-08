@@ -20,12 +20,12 @@ package com.wire.xenon.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NewBot {
+
     @JsonProperty
     @NotNull
     public UUID id;

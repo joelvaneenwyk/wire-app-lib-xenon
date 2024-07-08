@@ -3,13 +3,13 @@ package com.wire.xenon.state;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wire.xenon.backend.models.NewBot;
 import com.wire.xenon.exceptions.MissingStateException;
-import org.jdbi.v3.core.Jdbi;
-
 import java.io.IOException;
 import java.util.UUID;
+import org.jdbi.v3.core.Jdbi;
 
 public class JdbiState implements State {
-    private final static ObjectMapper mapper = new ObjectMapper();
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     private final UUID botId;
     private final StatesDAO statesDAO;
@@ -28,8 +28,7 @@ public class JdbiState implements State {
     @Override
     public NewBot getState() throws IOException {
         String str = statesDAO.get(botId);
-        if (str == null)
-            throw new MissingStateException(botId);
+        if (str == null) throw new MissingStateException(botId);
         return mapper.readValue(str, NewBot.class);
     }
 

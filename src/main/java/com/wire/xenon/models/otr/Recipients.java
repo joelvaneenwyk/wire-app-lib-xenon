@@ -37,5 +37,4 @@ public class Recipients extends HashMap<UUID, ClientCipher> {
     private ClientCipher toClients(UUID userId) {
         return computeIfAbsent(userId, k -> new ClientCipher());
     }
-
 }

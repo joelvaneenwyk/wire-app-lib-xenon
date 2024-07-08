@@ -1,10 +1,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class ButtonActionConfirmation implements IGeneric {
+
     private final UUID messageId = UUID.randomUUID();
     private final UUID refMsgId;
     private final String buttonId;
@@ -17,13 +17,13 @@ public class ButtonActionConfirmation implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         final Messages.ButtonActionConfirmation.Builder confirmation = Messages.ButtonActionConfirmation.newBuilder()
-                .setButtonId(buttonId)
-                .setReferenceMessageId(refMsgId.toString());
+            .setButtonId(buttonId)
+            .setReferenceMessageId(refMsgId.toString());
 
         return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setButtonActionConfirmation(confirmation)
-                .build();
+            .setMessageId(getMessageId().toString())
+            .setButtonActionConfirmation(confirmation)
+            .build();
     }
 
     @Override

@@ -20,10 +20,10 @@ package com.wire.xenon.assets;
 
 import com.google.protobuf.ByteString;
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class AudioPreview implements IGeneric {
+
     private final String name;
     private final String mimeType;
     private final UUID messageId;
@@ -47,25 +47,19 @@ public class AudioPreview implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         Messages.Asset.AudioMetaData.Builder audio = Messages.Asset.AudioMetaData.newBuilder()
-                .setDurationInMillis(duration);
+            .setDurationInMillis(duration);
 
-        if (levels != null)
-            audio.setNormalizedLoudness(ByteString.copyFrom(levels));
+        if (levels != null) audio.setNormalizedLoudness(ByteString.copyFrom(levels));
 
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(size)
-                .setName(name)
-                .setMimeType(mimeType)
-                .setAudio(audio.build());
+            .setSize(size)
+            .setName(name)
+            .setMimeType(mimeType)
+            .setAudio(audio.build());
 
-        Messages.Asset asset = Messages.Asset.newBuilder()
-                .setOriginal(original.build())
-                .build();
+        Messages.Asset asset = Messages.Asset.newBuilder().setOriginal(original.build()).build();
 
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setAsset(asset)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setAsset(asset).build();
     }
 
     public String getName() {

@@ -21,7 +21,6 @@ package com.wire.xenon.crypto;
 import com.wire.bots.cryptobox.CryptoBox;
 import com.wire.bots.cryptobox.CryptoException;
 import com.wire.bots.cryptobox.ICryptobox;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitOption;
@@ -35,6 +34,7 @@ import java.util.UUID;
  * Wrapper for the Crypto Box. This class is thread safe.
  */
 public class CryptoFile extends CryptoBase {
+
     private final CryptoBox box;
     private final String root;
 
@@ -85,8 +85,8 @@ public class CryptoFile extends CryptoBase {
         // we don't really care if the files were actually deleted or not
         //noinspection ResultOfMethodCallIgnored
         Files.walk(rootPath, FileVisitOption.FOLLOW_LINKS)
-                .sorted(Comparator.reverseOrder())
-                .map(Path::toFile)
-                .forEach(File::delete);
+            .sorted(Comparator.reverseOrder())
+            .map(Path::toFile)
+            .forEach(File::delete);
     }
 }

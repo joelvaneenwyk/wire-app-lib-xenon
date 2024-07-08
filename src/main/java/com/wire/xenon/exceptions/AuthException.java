@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AuthException extends HttpException {
+
     public AuthException(String message, int code) {
         super(message, code);
     }
@@ -15,9 +16,11 @@ public class AuthException extends HttpException {
     }
 
     @JsonCreator
-    public AuthException(@JsonProperty("message") String message,
-                         @JsonProperty("code") int code,
-                         @JsonProperty("label") String label) {
+    public AuthException(
+        @JsonProperty("message") String message,
+        @JsonProperty("code") int code,
+        @JsonProperty("label") String label
+    ) {
         super(message, code, label);
     }
 }

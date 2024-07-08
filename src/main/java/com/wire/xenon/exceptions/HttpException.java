@@ -6,21 +6,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HttpException extends Exception {
+
     private int code;
     private String message;
     private String label;
 
-    public HttpException(String message,
-                         int code) {
+    public HttpException(String message, int code) {
         super(message);
         this.code = code;
         this.message = message;
     }
 
     @JsonCreator
-    public HttpException(@JsonProperty("message") String message,
-                         @JsonProperty("code") int code,
-                         @JsonProperty("label") String label) {
+    public HttpException(
+        @JsonProperty("message") String message,
+        @JsonProperty("code") int code,
+        @JsonProperty("label") String label
+    ) {
         super(message);
         this.code = code;
         this.message = message;
@@ -31,8 +33,7 @@ public class HttpException extends Exception {
         this.code = code;
     }
 
-    public HttpException() {
-    }
+    public HttpException() {}
 
     @Override
     public String toString() {

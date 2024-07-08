@@ -19,10 +19,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class FileAssetPreview implements IGeneric {
+
     private final String name;
     private final String mimeType;
     private final long size;
@@ -38,17 +38,13 @@ public class FileAssetPreview implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(size)
-                .setName(name)
-                .setMimeType(mimeType);
+            .setSize(size)
+            .setName(name)
+            .setMimeType(mimeType);
 
-        Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setOriginal(original);
+        Messages.Asset.Builder asset = Messages.Asset.newBuilder().setOriginal(original);
 
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setAsset(asset)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setAsset(asset).build();
     }
 
     public String getName() {

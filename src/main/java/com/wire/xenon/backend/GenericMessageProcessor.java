@@ -23,10 +23,10 @@ import com.wire.xenon.MessageHandlerBase;
 import com.wire.xenon.WireClient;
 import com.wire.xenon.models.*;
 import com.wire.xenon.tools.Logger;
-
 import java.util.UUID;
 
 public class GenericMessageProcessor {
+
     private final WireClient client;
     private final MessageHandlerBase handler;
 
@@ -161,8 +161,11 @@ public class GenericMessageProcessor {
             final String quotedMessageId = text.getQuote().getQuotedMessageId();
             textMessage.setQuotedMessageId(UUID.fromString(quotedMessageId));
         }
-        for (Messages.Mention mention : text.getMentionsList())
-            textMessage.addMention(mention.getUserId(), mention.getStart(), mention.getLength());
+        for (Messages.Mention mention : text.getMentionsList()) textMessage.addMention(
+            mention.getUserId(),
+            mention.getStart(),
+            mention.getLength()
+        );
         return textMessage;
     }
 
@@ -192,7 +195,11 @@ public class GenericMessageProcessor {
         Messages.Confirmation.Type type = confirmation.getType();
 
         msg.setConfirmationMessageId(UUID.fromString(firstMessageId));
-        msg.setType(type.getNumber() == Messages.Confirmation.Type.DELIVERED_VALUE ? ConfirmationMessage.Type.DELIVERED : ConfirmationMessage.Type.READ);
+        msg.setType(
+            type.getNumber() == Messages.Confirmation.Type.DELIVERED_VALUE
+                ? ConfirmationMessage.Type.DELIVERED
+                : ConfirmationMessage.Type.READ
+        );
 
         handler.onConfirmation(client, msg);
         return true;

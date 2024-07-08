@@ -19,10 +19,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class VideoPreview implements IGeneric {
+
     private final String name;
     private final String mimeType;
     private final int h;
@@ -43,26 +43,20 @@ public class VideoPreview implements IGeneric {
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-
         Messages.Asset.VideoMetaData.Builder audio = Messages.Asset.VideoMetaData.newBuilder()
-                .setDurationInMillis(duration)
-                .setHeight(h)
-                .setWidth(w);
+            .setDurationInMillis(duration)
+            .setHeight(h)
+            .setWidth(w);
 
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(size)
-                .setName(name)
-                .setMimeType(mimeType)
-                .setVideo(audio.build());
+            .setSize(size)
+            .setName(name)
+            .setMimeType(mimeType)
+            .setVideo(audio.build());
 
-        Messages.Asset asset = Messages.Asset.newBuilder()
-                .setOriginal(original.build())
-                .build();
+        Messages.Asset asset = Messages.Asset.newBuilder().setOriginal(original.build()).build();
 
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setAsset(asset)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setAsset(asset).build();
     }
 
     public String getName() {

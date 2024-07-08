@@ -12,12 +12,12 @@ import com.wire.xenon.models.AssetKey;
 import com.wire.xenon.models.otr.*;
 import com.wire.xenon.tools.Logger;
 import com.wire.xenon.tools.Util;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.util.*;
 
 public abstract class WireClientBase implements WireClient {
+
     protected final WireAPI api;
     protected final Crypto crypto;
     protected final NewBot state;
@@ -95,9 +95,7 @@ public abstract class WireClientBase implements WireClient {
 
             res = api.sendMessage(msg, true);
             if (!res.hasMissing()) {
-                Logger.error(String.format("Failed to send otr message to %d devices. Bot: %s",
-                        res.size(),
-                        getId()));
+                Logger.error(String.format("Failed to send otr message to %d devices. Bot: %s", res.size(), getId()));
             }
         }
     }
@@ -134,9 +132,7 @@ public abstract class WireClientBase implements WireClient {
 
             res = api.sendMessage(msg, true);
             if (!res.hasMissing()) {
-                Logger.error(String.format("Failed to send otr message to %d devices. Bot: %s",
-                        res.size(),
-                        getId()));
+                Logger.error(String.format("Failed to send otr message to %d devices. Bot: %s", res.size(), getId()));
             }
         }
     }
@@ -208,11 +204,10 @@ public abstract class WireClientBase implements WireClient {
 
     @Override
     public byte[] downloadAsset(String assetId, String assetToken, byte[] sha256Challenge, byte[] otrKey)
-            throws Exception {
+        throws Exception {
         byte[] cipher = api.downloadAsset(assetId, assetToken);
         byte[] sha256 = MessageDigest.getInstance("SHA-256").digest(cipher);
-        if (!Arrays.equals(sha256, sha256Challenge))
-            throw new Exception("Failed sha256 check");
+        if (!Arrays.equals(sha256, sha256Challenge)) throw new Exception("Failed sha256 check");
 
         return Util.decrypt(otrKey, cipher);
     }

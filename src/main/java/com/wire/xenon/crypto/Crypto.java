@@ -5,7 +5,6 @@ import com.wire.xenon.models.otr.Missing;
 import com.wire.xenon.models.otr.PreKey;
 import com.wire.xenon.models.otr.PreKeys;
 import com.wire.xenon.models.otr.Recipients;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
