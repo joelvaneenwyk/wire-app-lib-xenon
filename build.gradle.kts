@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.`java-library`
 plugins {
     `java-library`
     `maven-publish`
-	id("com.google.protobuf") version("0.9.4")
+    id("com.google.protobuf") version("0.9.4")
 }
 
 repositories {
@@ -16,43 +16,9 @@ repositories {
     mavenCentral()
     mavenLocal()
     google()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    // transitive dependency for the lithium
-    maven {
-        url = uri("https://repo1.maven.org/maven2/")
-    }
-    // lithium
-    maven {
-        url = uri("https://packagecloud.io/dkovacevic/helium/maven2")
-    }
-    maven {
-        url = uri("https://packagecloud.io/dkovacevic/xenon/maven2")
-    }
 }
 
 dependencies {
-    // <dependency>
-    // <groupId>([\da-zA-Z\-\.\\]+)</groupId>
-    // <artifactId>([\da-zA-Z\-\.\\]+)</artifactId>
-    // <version>([\da-zA-Z\-\.\\]+)</version>
-    // <scope>test</scope>
-    // </dependency>
-    // implementation("$1", "$2", "$3")
-
-    // <dependency>
-    // <groupId>([\da-zA-Z\-\.\\]+)</groupId>
-    // <artifactId>([\da-zA-Z\-\.\\]+)</artifactId>
-    // <version>([\da-zA-Z\-\.\\]+)</version>
-    // <scope>test</scope>
-    // </dependency>
-    // testImplementation("$1", "$2", "$3")
-
-    val atlassianVersion = "0.17.1"
-    val htmlToPdfVersion = "1.0.6"
-    val junitVersion = "5.7.1"
-
     implementation("com.wire", "cryptobox4j", "1.3.0")
 
     implementation("com.fasterxml.jackson.core", "jackson-annotations", "2.15.1")
@@ -64,24 +30,6 @@ dependencies {
 
     implementation("org.jdbi", "jdbi3-sqlobject", "3.37.1")
 
-    // implementation("com.fasterxml.jackson.module", "jackson-module-kotlin", "2.11.1")
-    // implementation("com.github.spullara.mustache.java", "compiler", "0.9.7")
-    // implementation("com.openhtmltopdf", "openhtmltopdf-core", htmlToPdfVersion)
-    // implementation("com.openhtmltopdf", "openhtmltopdf-pdfbox", htmlToPdfVersion)
-    // implementation("com.openhtmltopdf", "openhtmltopdf-svg-support", htmlToPdfVersion)
-    // implementation("info.picocli", "picocli", "4.6.1")
-    // implementation("io.github.microutils", "kotlin-logging", "2.0.6")
-    // implementation("javax.activation", "activation", "1.1.1")
-    // implementation("net.java.dev.jna", "jna", "5.7.0")
-    // implementation("net.lingala.zip4j", "zip4j", "2.6.1")
-    // implementation("org.commonmark", "commonmark-ext-autolink", atlassianVersion)
-    // implementation("org.commonmark", "commonmark", atlassianVersion)
-    // implementation("org.glassfish.jersey.inject", "jersey-hk2", "2.32")
-    // implementation("org.glassfish.jersey.media", "jersey-media-json-jackson", "2.32")
-    // implementation("org.jetbrains.kotlin", "kotlin-reflect", "1.4.31")
-    // implementation("org.slf4j", "slf4j-simple", "2.0.0-alpha1")
-    // implementation("org.xerial", "sqlite-jdbc", "3.34.0")
-
     testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.9.2")
     testImplementation("org.junit.jupiter", "junit-jupiter-engine", "5.9.2")
 
@@ -90,42 +38,53 @@ dependencies {
     testImplementation("org.flywaydb", "flyway-core", "9.15.1")
 
     testImplementation("org.slf4j", "slf4j-simple", "2.0.6")
+}
 
-    // testImplementation("org.junit.jupiter", "junit-jupiter-api", junitVersion)
-    // testImplementation(kotlin("test-junit5"))
-    // testImplementation(kotlin("test"))
-    // testImplementation(libs.org.flywaydb.flyway.core)
-    // testImplementation(libs.org.junit.jupiter.junit.jupiter.api)
-    // testImplementation(libs.org.junit.jupiter.junit.jupiter.engine)
-    // testImplementation(libs.org.postgresql.postgresql)
-    // testImplementation(libs.org.slf4j.slf4j.simple)
-    // testRuntimeOnly("org.junit.jupiter", "junit-jupiter-engine", junitVersion)
+protobuf {
+//    plugins {
+//        id("grpc") {
+//            artifact = libs.grpc.genJava.get().toString()
+//        }
+//    }
+//
+    protoc {
+        // TODO(Benoit) Replace with `artifact = libs.protobuf.protoc.get().toString()` once gRPC-java
+        //  starts supporting protoc 4+. See https://github.com/grpc/grpc-java/issues/10976
+        artifact = "com.google.protobuf:protoc:3.25.3"
+    }
+//
+//    generateProtoTasks {
+//        ofSourceSet("test").forEach {
+//            it.plugins {
+//                // Apply the "grpc" plugin whose spec is defined above, without
+//                // options.  Note the braces cannot be omitted, otherwise the
+//                // plugin will not be added. This is because of the implicit way
+//                // NamedDomainObjectContainer binds the methods.
+//                id("grpc") {}
+//            }
+//        }
+//    }
+}
+
+buildscript {
+    dependencies {
+        classpath(libs.protobuf.gradlePlugin)
+    }
+
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
 group = "com.wire"
 version = "1.5.5"
 description = "Xenon"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
     withJavadocJar()
-    //sourceSets {
-    //    main {
-    //        proto {
-    //        // In addition to the default 'src/main/proto'
-    //        srcDir 'src/main/proto'
-    //        // In addition to the default '**/*.proto' (use with caution).
-    //        // Using an extension other than 'proto' is NOT recommended,
-    //        // because when proto files are published along with class files, we can
-    //        // only tell the type of a file from its extension.
-    //        include '**/*.proto'
-    //        }
-    //        java {
-    //        ...
-    //        }
-    //    }
-    //}
 }
 
 publishing {
@@ -133,20 +92,6 @@ publishing {
         from(components["java"])
     }
 }
-
-//tasks.withType<protobuf> {
-//    generatedFilesBaseDir = file("$buildDir/generated-sources/protobuf")
-//}
-
-// protobuf {
-//   ...
-//   // Configure the protoc executable
-//   protoc {
-//     // Download from repositories
-//     artifact('com.google.protobuf:protoc:3.0.0')
-//   }
-//   ...
-// }
 
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
