@@ -44,6 +44,35 @@ jobs:
         run: |
           mvn package -DskipTests
 
+  tests-gradle:
+    needs: tests
+    name: Gradle Tests
+    runs-on: ubuntu-20.04
+    container: wirebot/cryptobox:1.3.0
+
+    # Enable postgres
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Environment Variables
+        run: |
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_URL=postgres:5432/postgres" >> $GITHUB_ENV
+
+      - name: Execute Tests
+        run: |
+          gradlew build
+
   build:
     needs: tests
     name: Maven Build
@@ -74,7 +103,7 @@ jobs:
           server-password: MAVEN_PASSWORD
 
       - name: Publish to the Maven Central Repository
-        continue-on-error: true 
+        continue-on-error: true
         run: mvn -DskipTests --batch-mode deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
