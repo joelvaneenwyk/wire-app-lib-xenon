@@ -2,6 +2,8 @@
 ### Java template
 
 *.iml
+!/xenon.iml
+
 target/
 data/
 libs/
@@ -9,3 +11,6 @@ libs/
 .project
 .settings
 .DS_Store
+
+.gradle/
+lib/
