@@ -2,11 +2,11 @@ package com.wire.xenon;
 
 import com.wire.xenon.crypto.storage.IdentitiesDAO;
 import com.wire.xenon.state.StatesDAO;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 public class DAOTest extends DatabaseTestBase {
+
     //@Test
     public void testIdentitiesDAO() {
         final IdentitiesDAO identitiesDAO = jdbi.onDemand(IdentitiesDAO.class);

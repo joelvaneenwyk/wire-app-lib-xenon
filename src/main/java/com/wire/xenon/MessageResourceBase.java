@@ -10,12 +10,12 @@ import com.wire.xenon.backend.models.Payload;
 import com.wire.xenon.backend.models.SystemMessage;
 import com.wire.xenon.models.MessageBase;
 import com.wire.xenon.tools.Logger;
-
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class MessageResourceBase {
+
     protected final MessageHandlerBase handler;
 
     public MessageResourceBase(MessageHandlerBase handler) {
@@ -37,7 +37,14 @@ public abstract class MessageResourceBase {
                 Messages.GenericMessage genericMessage = decrypt(client, payload);
 
                 final UUID messageId = UUID.fromString(genericMessage.getMessageId());
-                MessageBase msgBase = new MessageBase(eventId, messageId, payload.conversation.id, data.sender, from, payload.time);
+                MessageBase msgBase = new MessageBase(
+                    eventId,
+                    messageId,
+                    payload.conversation.id,
+                    data.sender,
+                    from,
+                    payload.time
+                );
 
                 processor.process(msgBase, genericMessage);
 
@@ -110,11 +117,13 @@ public abstract class MessageResourceBase {
                 break;
             case "user.connection":
                 Payload.Connection connection = payload.connection;
-                Logger.debug("user.connection: bot: %s, from: %s to: %s status: %s",
-                        botId,
-                        connection.from,
-                        connection.to,
-                        connection.status);
+                Logger.debug(
+                    "user.connection: bot: %s, from: %s to: %s status: %s",
+                    botId,
+                    connection.from,
+                    connection.to,
+                    connection.status
+                );
 
                 boolean accepted = handler.onConnectRequest(client, connection.from, connection.to, connection.status);
                 if (accepted) {
@@ -147,15 +156,14 @@ public abstract class MessageResourceBase {
         if (payload.data != null) {
             systemMessage.conversation.creator = payload.data.creator;
             systemMessage.conversation.name = payload.data.name;
-            if (payload.data.members != null)
-                systemMessage.conversation.members = payload.data.members.others;
+            if (payload.data.members != null) systemMessage.conversation.members = payload.data.members.others;
         }
 
         return systemMessage;
     }
 
     private Messages.GenericMessage decrypt(WireClient client, Payload payload)
-            throws CryptoException, InvalidProtocolBufferException {
+        throws CryptoException, InvalidProtocolBufferException {
         UUID from = payload.from.id;
         String sender = payload.data.sender;
         String cipher = payload.data.text;

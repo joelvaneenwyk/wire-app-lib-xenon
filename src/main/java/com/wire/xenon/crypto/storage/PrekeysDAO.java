@@ -1,6 +1,9 @@
 package com.wire.xenon.crypto.storage;
 
 import com.wire.bots.cryptobox.PreKey;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 import org.jdbi.v3.core.mapper.ColumnMapper;
 import org.jdbi.v3.core.statement.StatementContext;
 import org.jdbi.v3.sqlobject.config.RegisterColumnMapper;
@@ -8,15 +11,11 @@ import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
-
 public interface PrekeysDAO {
-    @SqlUpdate("INSERT INTO Prekeys (id, kid, data) VALUES (:id, :kid, :data) ON CONFLICT (id, kid) DO UPDATE SET data = EXCLUDED.data")
-    int insert(@Bind("id") String id,
-               @Bind("kid") int kid,
-               @Bind("data") byte[] data);
+    @SqlUpdate(
+        "INSERT INTO Prekeys (id, kid, data) VALUES (:id, :kid, :data) ON CONFLICT (id, kid) DO UPDATE SET data = EXCLUDED.data"
+    )
+    int insert(@Bind("id") String id, @Bind("kid") int kid, @Bind("data") byte[] data);
 
     @SqlQuery("SELECT kid, data FROM Prekeys WHERE id = :id")
     @RegisterColumnMapper(_Mapper.class)

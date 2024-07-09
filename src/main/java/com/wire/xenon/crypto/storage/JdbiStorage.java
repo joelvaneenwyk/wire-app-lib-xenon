@@ -3,11 +3,11 @@ package com.wire.xenon.crypto.storage;
 import com.wire.bots.cryptobox.IRecord;
 import com.wire.bots.cryptobox.IStorage;
 import com.wire.bots.cryptobox.PreKey;
+import java.util.List;
 import org.jdbi.v3.core.Jdbi;
 
-import java.util.List;
-
 public class JdbiStorage implements IStorage {
+
     private final SessionsDAO sessionsDAO;
     private final IdentitiesDAO identitiesDAO;
     private final PrekeysDAO prekeysDAO;
@@ -38,8 +38,7 @@ public class JdbiStorage implements IStorage {
     @Override
     public PreKey[] fetchPrekeys(String id) {
         List<PreKey> preKeys = prekeysDAO.get(id);
-        if (preKeys.isEmpty())
-            return null;
+        if (preKeys.isEmpty()) return null;
 
         PreKey[] ret = new PreKey[preKeys.size()];
         return preKeys.toArray(ret);
@@ -58,6 +57,7 @@ public class JdbiStorage implements IStorage {
     }
 
     class Record implements IRecord {
+
         private final String id;
         private final String sid;
         private final byte[] data;

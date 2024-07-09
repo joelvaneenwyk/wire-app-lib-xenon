@@ -22,13 +22,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TextMessage extends MessageBase {
+
     @JsonProperty
     private String text;
 
@@ -42,12 +42,14 @@ public class TextMessage extends MessageBase {
     private final ArrayList<Mention> mentions = new ArrayList<>();
 
     @JsonCreator
-    public TextMessage(@JsonProperty("eventId") UUID eventId,
-                       @JsonProperty("messageId") UUID messageId,
-                       @JsonProperty("conversationId") UUID convId,
-                       @JsonProperty("clientId") String clientId,
-                       @JsonProperty("userId") UUID userId,
-                       @JsonProperty("time") String time) {
+    public TextMessage(
+        @JsonProperty("eventId") UUID eventId,
+        @JsonProperty("messageId") UUID messageId,
+        @JsonProperty("conversationId") UUID convId,
+        @JsonProperty("clientId") String clientId,
+        @JsonProperty("userId") UUID userId,
+        @JsonProperty("time") String time
+    ) {
         super(eventId, messageId, convId, clientId, userId, time);
     }
 
@@ -93,6 +95,7 @@ public class TextMessage extends MessageBase {
     }
 
     public static class Mention {
+
         public UUID userId;
         public int offset;
         public int length;

@@ -26,7 +26,6 @@ import com.wire.xenon.backend.models.User;
 import com.wire.xenon.exceptions.HttpException;
 import com.wire.xenon.models.AssetKey;
 import com.wire.xenon.models.otr.PreKey;
-
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import java.util.UUID;
  * Thread safe class for postings into this conversation
  */
 public interface WireClient extends Closeable {
-
     /**
      * Post a generic message into conversation
      *

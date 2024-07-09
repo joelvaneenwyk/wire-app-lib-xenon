@@ -20,10 +20,10 @@ package com.wire.xenon.assets;
 
 import com.google.protobuf.ByteString;
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class MessageText implements IGeneric {
+
     private final Messages.Text.Builder builder = Messages.Text.newBuilder();
 
     private UUID messageId = UUID.randomUUID();
@@ -49,17 +49,17 @@ public class MessageText implements IGeneric {
 
     public MessageText setQuote(UUID msgId, byte[] sha256) {
         Messages.Quote.Builder quote = Messages.Quote.newBuilder()
-                .setQuotedMessageId(msgId.toString())
-                .setQuotedMessageSha256(ByteString.copyFrom(sha256));
+            .setQuotedMessageId(msgId.toString())
+            .setQuotedMessageSha256(ByteString.copyFrom(sha256));
         builder.setQuote(quote);
         return this;
     }
 
     public MessageText addMention(UUID mentionUser, int offset, int len) {
         Messages.Mention.Builder mention = Messages.Mention.newBuilder()
-                .setUserId(mentionUser.toString())
-                .setLength(len)
-                .setStart(offset);
+            .setUserId(mentionUser.toString())
+            .setLength(len)
+            .setStart(offset);
 
         builder.addMentions(mention);
         return this;
@@ -67,10 +67,7 @@ public class MessageText implements IGeneric {
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-        return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setText(builder)
-                .build();
+        return Messages.GenericMessage.newBuilder().setMessageId(getMessageId().toString()).setText(builder).build();
     }
 
     @Override

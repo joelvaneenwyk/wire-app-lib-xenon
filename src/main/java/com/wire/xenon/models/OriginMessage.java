@@ -21,6 +21,7 @@ package com.wire.xenon.models;
 import java.util.UUID;
 
 public abstract class OriginMessage extends MessageBase {
+
     private String mimeType;
     private String name;
     private long size;

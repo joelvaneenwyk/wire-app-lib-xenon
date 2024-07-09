@@ -6,13 +6,12 @@ import com.wire.xenon.backend.models.User;
 import com.wire.xenon.exceptions.HttpException;
 import com.wire.xenon.models.AssetKey;
 import com.wire.xenon.models.otr.*;
-
-import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import javax.validation.constraints.NotNull;
 
 public interface WireAPI {
     Devices sendMessage(OtrMessage msg, Object... ignoreMissing) throws HttpException;

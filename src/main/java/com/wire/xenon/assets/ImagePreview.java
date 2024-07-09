@@ -22,6 +22,7 @@ import com.waz.model.Messages;
 import java.util.UUID;
 
 public class ImagePreview implements IGeneric {
+
     private final String mimeType;
     private final UUID messageId;
 
@@ -37,24 +38,21 @@ public class ImagePreview implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         Messages.GenericMessage.Builder ret = Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString());
+            .setMessageId(getMessageId().toString());
 
         Messages.Asset.ImageMetaData.Builder metaData = Messages.Asset.ImageMetaData.newBuilder()
-                .setHeight(height)
-                .setWidth(width)
-                .setTag("medium");
+            .setHeight(height)
+            .setWidth(width)
+            .setTag("medium");
 
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(size)
-                .setMimeType(mimeType)
-                .setImage(metaData);
+            .setSize(size)
+            .setMimeType(mimeType)
+            .setImage(metaData);
 
-        Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setOriginal(original);
+        Messages.Asset.Builder asset = Messages.Asset.newBuilder().setOriginal(original);
 
-        return ret
-                .setAsset(asset)
-                .build();
+        return ret.setAsset(asset).build();
     }
 
     @Override
@@ -85,5 +83,4 @@ public class ImagePreview implements IGeneric {
     public void setSize(int size) {
         this.size = size;
     }
-
 }

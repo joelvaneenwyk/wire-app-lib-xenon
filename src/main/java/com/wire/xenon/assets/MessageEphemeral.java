@@ -19,10 +19,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class MessageEphemeral implements IGeneric {
+
     private final Messages.Ephemeral.Builder builder = Messages.Ephemeral.newBuilder();
 
     private UUID messageId = UUID.randomUUID();
@@ -32,8 +32,7 @@ public class MessageEphemeral implements IGeneric {
     }
 
     public MessageEphemeral setText(String text) {
-        final Messages.Text.Builder textBuilder = Messages.Text.newBuilder()
-                .setContent(text);
+        final Messages.Text.Builder textBuilder = Messages.Text.newBuilder().setContent(text);
         builder.setText(textBuilder);
         return this;
     }
@@ -41,9 +40,9 @@ public class MessageEphemeral implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setEphemeral(builder)
-                .build();
+            .setMessageId(getMessageId().toString())
+            .setEphemeral(builder)
+            .build();
     }
 
     @Override
@@ -55,5 +54,4 @@ public class MessageEphemeral implements IGeneric {
         this.messageId = messageId;
         return this;
     }
-
 }

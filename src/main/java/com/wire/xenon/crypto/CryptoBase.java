@@ -24,7 +24,6 @@ import com.wire.xenon.models.otr.Missing;
 import com.wire.xenon.models.otr.PreKey;
 import com.wire.xenon.models.otr.PreKeys;
 import com.wire.xenon.models.otr.Recipients;
-
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;

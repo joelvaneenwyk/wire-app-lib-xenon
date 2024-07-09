@@ -19,11 +19,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
-
 public class Reaction implements IGeneric {
+
     private final UUID messageId = UUID.randomUUID();
 
     private final UUID msgId;
@@ -37,13 +36,13 @@ public class Reaction implements IGeneric {
     @Override
     public Messages.GenericMessage createGenericMsg() {
         Messages.Reaction.Builder reaction = Messages.Reaction.newBuilder()
-                .setMessageId(msgId.toString())
-                .setEmoji(emoji);
+            .setMessageId(msgId.toString())
+            .setEmoji(emoji);
 
         return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setReaction(reaction)
-                .build();
+            .setMessageId(getMessageId().toString())
+            .setReaction(reaction)
+            .build();
     }
 
     @Override

@@ -22,7 +22,6 @@ import com.wire.bots.cryptobox.CryptoDb;
 import com.wire.bots.cryptobox.CryptoException;
 import com.wire.bots.cryptobox.ICryptobox;
 import com.wire.bots.cryptobox.IStorage;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -30,6 +29,7 @@ import java.util.UUID;
  * Wrapper for the Crypto Box. This class is thread safe.
  */
 public class CryptoDatabase extends CryptoBase {
+
     private final CryptoDb box;
 
     /**

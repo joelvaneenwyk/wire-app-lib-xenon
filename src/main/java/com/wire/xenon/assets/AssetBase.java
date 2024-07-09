@@ -1,16 +1,15 @@
 package com.wire.xenon.assets;
 
-
 import com.google.protobuf.ByteString;
 import com.waz.model.Messages;
 import com.wire.xenon.tools.Util;
-
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.UUID;
 
 public abstract class AssetBase implements IAsset, IGeneric {
-    static private final SecureRandom random = new SecureRandom();
+
+    private static final SecureRandom random = new SecureRandom();
     protected final String mimeType;
     protected UUID messageId;
     protected byte[] encBytes;
@@ -31,7 +30,6 @@ public abstract class AssetBase implements IAsset, IGeneric {
 
     public AssetBase(UUID messageId, String mimeType, byte[] bytes) throws Exception {
         this(messageId, mimeType);
-
         otrKey = new byte[32];
         random.nextBytes(otrKey);
 
@@ -46,8 +44,8 @@ public abstract class AssetBase implements IAsset, IGeneric {
     public Messages.GenericMessage createGenericMsg() {
         // Remote
         Messages.Asset.RemoteData.Builder remote = Messages.Asset.RemoteData.newBuilder()
-                .setOtrKey(ByteString.copyFrom(getOtrKey()))
-                .setSha256(ByteString.copyFrom(getSha256()));
+            .setOtrKey(ByteString.copyFrom(getOtrKey()))
+            .setSha256(ByteString.copyFrom(getSha256()));
 
         // Only set token on private assets
         if (getAssetToken() != null) {
@@ -63,25 +61,21 @@ public abstract class AssetBase implements IAsset, IGeneric {
         }
 
         Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setExpectsReadConfirmation(isReadReceiptsEnabled())
-                .setUploaded(remote);
+            .setExpectsReadConfirmation(isReadReceiptsEnabled())
+            .setUploaded(remote);
 
         Messages.GenericMessage.Builder ret = Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString());
+            .setMessageId(getMessageId().toString());
 
         if (expires > 0) {
             Messages.Ephemeral.Builder ephemeral = Messages.Ephemeral.newBuilder()
-                    .setAsset(asset)
-                    .setExpireAfterMillis(expires);
+                .setAsset(asset)
+                .setExpireAfterMillis(expires);
 
-            return ret
-                    .setEphemeral(ephemeral)
-                    .build();
+            return ret.setEphemeral(ephemeral).build();
         }
 
-        return ret
-                .setAsset(asset)
-                .build();
+        return ret.setAsset(asset).build();
     }
 
     @Override

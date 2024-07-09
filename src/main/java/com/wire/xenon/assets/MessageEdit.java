@@ -1,10 +1,10 @@
 package com.wire.xenon.assets;
 
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class MessageEdit implements IGeneric {
+
     private final UUID replacingMessageId;
     private final String text;
     private final UUID messageId = UUID.randomUUID();
@@ -16,17 +16,16 @@ public class MessageEdit implements IGeneric {
 
     @Override
     public Messages.GenericMessage createGenericMsg() {
-        Messages.Text.Builder text = Messages.Text.newBuilder()
-                .setContent(this.text);
+        Messages.Text.Builder text = Messages.Text.newBuilder().setContent(this.text);
 
         Messages.MessageEdit.Builder messageEdit = Messages.MessageEdit.newBuilder()
-                .setReplacingMessageId(replacingMessageId.toString())
-                .setText(text);
+            .setReplacingMessageId(replacingMessageId.toString())
+            .setText(text);
 
         return Messages.GenericMessage.newBuilder()
-                .setMessageId(getMessageId().toString())
-                .setEdited(messageEdit)
-                .build();
+            .setMessageId(getMessageId().toString())
+            .setEdited(messageEdit)
+            .build();
     }
 
     @Override

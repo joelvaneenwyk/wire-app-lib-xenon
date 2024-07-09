@@ -18,13 +18,6 @@
 
 package com.wire.xenon.tools;
 
-import javax.crypto.Cipher;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
 import java.math.BigInteger;
 import java.net.URLConnection;
@@ -37,8 +30,16 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Util {
+
     private static Pattern pattern = Pattern.compile("(?<=@)([a-zA-Z0-9\\_]{3,})");
     private static final String HMAC_SHA_1 = "HmacSHA1";
 
@@ -68,7 +69,7 @@ public class Util {
     }
 
     public static SecretKey genKey(char[] password, byte[] salt)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+        throws NoSuchAlgorithmException, InvalidKeySpecException {
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
         KeySpec spec = new PBEKeySpec(password, salt, 65536, 256);
         SecretKey tmp = factory.generateSecret(spec);
@@ -111,7 +112,7 @@ public class Util {
     }
 
     public static String getHmacSHA1(String payload, String secret)
-            throws NoSuchAlgorithmException, InvalidKeyException {
+        throws NoSuchAlgorithmException, InvalidKeyException {
         Mac hmac = Mac.getInstance(HMAC_SHA_1);
         hmac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), HMAC_SHA_1));
         byte[] bytes = hmac.doFinal(payload.getBytes(StandardCharsets.UTF_8));
@@ -130,8 +131,7 @@ public class Util {
     }
 
     public static boolean compareAuthorizations(String auth1, String auth2) {
-        if (auth1 == null || auth2 == null)
-            return false;
+        if (auth1 == null || auth2 == null) return false;
         String token1 = extractToken(auth1);
         String token2 = extractToken(auth2);
         return token1.equals(token2);

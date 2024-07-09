@@ -22,30 +22,36 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LinkPreviewMessage extends OriginMessage {
+
     @JsonProperty
     private String summary;
+
     @JsonProperty
     private String title;
+
     @JsonProperty
     private String url;
+
     @JsonProperty
     private String text;
+
     @JsonProperty
     private int urlOffset;
 
     @JsonCreator
-    public LinkPreviewMessage(@JsonProperty("eventId") UUID eventId,
-                              @JsonProperty("messageId") UUID messageId,
-                              @JsonProperty("conversationId") UUID convId,
-                              @JsonProperty("clientId") String clientId,
-                              @JsonProperty("userId") UUID userId,
-                              @JsonProperty("time") String time) {
+    public LinkPreviewMessage(
+        @JsonProperty("eventId") UUID eventId,
+        @JsonProperty("messageId") UUID messageId,
+        @JsonProperty("conversationId") UUID convId,
+        @JsonProperty("clientId") String clientId,
+        @JsonProperty("userId") UUID userId,
+        @JsonProperty("time") String time
+    ) {
         super(eventId, messageId, convId, clientId, userId, time);
     }
 

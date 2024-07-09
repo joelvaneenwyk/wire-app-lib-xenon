@@ -1,18 +1,17 @@
 package com.wire.xenon;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.google.protobuf.ByteString;
 import com.waz.model.Messages;
 import com.wire.xenon.backend.GenericMessageProcessor;
 import com.wire.xenon.models.AudioPreviewMessage;
 import com.wire.xenon.models.LinkPreviewMessage;
 import com.wire.xenon.models.MessageBase;
-import org.junit.jupiter.api.Test;
-
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class GenericMessageProcessorTest {
 
@@ -44,38 +43,34 @@ public class GenericMessageProcessorTest {
         String time = new Date().toString();
 
         Messages.Asset.ImageMetaData.Builder image = Messages.Asset.ImageMetaData.newBuilder()
-                .setHeight(HEIGHT)
-                .setWidth(WIDTH);
+            .setHeight(HEIGHT)
+            .setWidth(WIDTH);
 
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(SIZE)
-                .setMimeType(MIME_TYPE)
-                .setImage(image);
+            .setSize(SIZE)
+            .setMimeType(MIME_TYPE)
+            .setImage(image);
 
         Messages.Asset.RemoteData.Builder uploaded = Messages.Asset.RemoteData.newBuilder()
-                .setAssetId(ASSET_KEY)
-                .setAssetToken(ASSET_TOKEN)
-                .setOtrKey(ByteString.EMPTY)
-                .setSha256(ByteString.EMPTY);
+            .setAssetId(ASSET_KEY)
+            .setAssetToken(ASSET_TOKEN)
+            .setOtrKey(ByteString.EMPTY)
+            .setSha256(ByteString.EMPTY);
 
-        Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setOriginal(original)
-                .setUploaded(uploaded);
+        Messages.Asset.Builder asset = Messages.Asset.newBuilder().setOriginal(original).setUploaded(uploaded);
 
         Messages.LinkPreview.Builder linkPreview = Messages.LinkPreview.newBuilder()
-                .setTitle(TITLE)
-                .setSummary(SUMMARY)
-                .setUrl(URL)
-                .setUrlOffset(URL_OFFSET)
-                .setImage(asset);
+            .setTitle(TITLE)
+            .setSummary(SUMMARY)
+            .setUrl(URL)
+            .setUrlOffset(URL_OFFSET)
+            .setImage(asset);
 
-        Messages.Text.Builder text = Messages.Text.newBuilder()
-                .setContent(CONTENT)
-                .addLinkPreview(linkPreview);
+        Messages.Text.Builder text = Messages.Text.newBuilder().setContent(CONTENT).addLinkPreview(linkPreview);
 
         Messages.GenericMessage.Builder builder = Messages.GenericMessage.newBuilder()
-                .setMessageId(messageId.toString())
-                .setText(text);
+            .setMessageId(messageId.toString())
+            .setText(text);
 
         MessageBase msgBase = new MessageBase(eventId, messageId, convId, sender, from, time);
         processor.process(msgBase, builder.build());
@@ -96,21 +91,20 @@ public class GenericMessageProcessorTest {
         new Random().nextBytes(levels);
 
         Messages.Asset.AudioMetaData.Builder audioMeta = Messages.Asset.AudioMetaData.newBuilder()
-                .setDurationInMillis(DURATION)
-                .setNormalizedLoudness(ByteString.copyFrom(levels));
+            .setDurationInMillis(DURATION)
+            .setNormalizedLoudness(ByteString.copyFrom(levels));
 
         Messages.Asset.Original.Builder original = Messages.Asset.Original.newBuilder()
-                .setSize(SIZE)
-                .setName(NAME)
-                .setMimeType(AUDIO_MIME_TYPE)
-                .setAudio(audioMeta);
+            .setSize(SIZE)
+            .setName(NAME)
+            .setMimeType(AUDIO_MIME_TYPE)
+            .setAudio(audioMeta);
 
-        Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setOriginal(original);
+        Messages.Asset.Builder asset = Messages.Asset.newBuilder().setOriginal(original);
 
         Messages.GenericMessage.Builder builder = Messages.GenericMessage.newBuilder()
-                .setMessageId(messageId.toString())
-                .setAsset(asset);
+            .setMessageId(messageId.toString())
+            .setAsset(asset);
 
         MessageBase msgBase = new MessageBase(eventId, messageId, convId, sender, from, time);
         processor.process(msgBase, builder.build());
@@ -131,23 +125,23 @@ public class GenericMessageProcessorTest {
         new Random().nextBytes(levels);
 
         Messages.Asset.RemoteData.Builder uploaded = Messages.Asset.RemoteData.newBuilder()
-                .setAssetId(ASSET_KEY)
-                .setAssetToken(ASSET_TOKEN)
-                .setOtrKey(ByteString.EMPTY)
-                .setSha256(ByteString.EMPTY);
+            .setAssetId(ASSET_KEY)
+            .setAssetToken(ASSET_TOKEN)
+            .setOtrKey(ByteString.EMPTY)
+            .setSha256(ByteString.EMPTY);
 
-        Messages.Asset.Builder asset = Messages.Asset.newBuilder()
-                .setUploaded(uploaded);
+        Messages.Asset.Builder asset = Messages.Asset.newBuilder().setUploaded(uploaded);
 
         Messages.GenericMessage.Builder builder = Messages.GenericMessage.newBuilder()
-                .setMessageId(messageId.toString())
-                .setAsset(asset);
+            .setMessageId(messageId.toString())
+            .setAsset(asset);
 
         MessageBase msgBase = new MessageBase(eventId, messageId, convId, sender, from, time);
         processor.process(msgBase, builder.build());
     }
 
     private static class MessageHandler extends MessageHandlerBase {
+
         @Override
         public void onLinkPreview(WireClient client, LinkPreviewMessage msg) {
             assertEquals(TITLE, msg.getTitle());

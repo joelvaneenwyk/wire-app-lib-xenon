@@ -1,9 +1,8 @@
 package com.wire.xenon.state;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wire.xenon.exceptions.MissingStateException;
 import com.wire.xenon.backend.models.NewBot;
-
+import com.wire.xenon.exceptions.MissingStateException;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -32,8 +31,7 @@ public class FileState implements State {
     @Override
     public NewBot getState() throws IOException {
         File file = getStateFile();
-        if (!file.exists())
-            throw new MissingStateException(botId);
+        if (!file.exists()) throw new MissingStateException(botId);
 
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(file, NewBot.class);

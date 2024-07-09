@@ -20,7 +20,6 @@ package com.wire.xenon.assets;
 
 import com.google.protobuf.ByteString;
 import com.waz.model.Messages;
-
 import java.util.UUID;
 
 public class VideoAsset extends AssetBase {

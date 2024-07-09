@@ -23,8 +23,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetKey {
+
     @JsonProperty("key")
     public String id;
+
     public String token;
     public String domain;
 }
