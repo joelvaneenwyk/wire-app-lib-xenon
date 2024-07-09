@@ -30,6 +30,8 @@ dependencies {
 
     implementation("org.jdbi", "jdbi3-sqlobject", "3.37.1")
 
+    implementation("org.postgresql", "postgresql", "42.5.4")
+
     testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.9.2")
     testImplementation("org.junit.jupiter", "junit-jupiter-engine", "5.9.2")
 
@@ -41,29 +43,30 @@ dependencies {
 }
 
 protobuf {
-//    plugins {
-//        id("grpc") {
-//            artifact = libs.grpc.genJava.get().toString()
-//        }
-//    }
-//
+    plugins {
+        id("grpc") {
+            artifact = libs.grpc.genJava.get().toString()
+        }
+    }
+
     protoc {
         // TODO(Benoit) Replace with `artifact = libs.protobuf.protoc.get().toString()` once gRPC-java
         //  starts supporting protoc 4+. See https://github.com/grpc/grpc-java/issues/10976
         artifact = "com.google.protobuf:protoc:3.25.3"
     }
-//
-//    generateProtoTasks {
-//        ofSourceSet("test").forEach {
-//            it.plugins {
-//                // Apply the "grpc" plugin whose spec is defined above, without
-//                // options.  Note the braces cannot be omitted, otherwise the
-//                // plugin will not be added. This is because of the implicit way
-//                // NamedDomainObjectContainer binds the methods.
-//                id("grpc") {}
-//            }
-//        }
-//    }
+
+
+    generateProtoTasks {
+        ofSourceSet("test").forEach {
+            it.plugins {
+                // Apply the "grpc" plugin whose spec is defined above, without
+                // options.  Note the braces cannot be omitted, otherwise the
+                // plugin will not be added. This is because of the implicit way
+                // NamedDomainObjectContainer binds the methods.
+                id("grpc") {}
+            }
+        }
+    }
 }
 
 buildscript {
