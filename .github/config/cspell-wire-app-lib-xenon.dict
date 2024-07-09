@@ -4,6 +4,8 @@ assertj
 buildconfig
 checkerframework
 classpath
+cryptobox
+databind
 dataformat
 Datasource
 diffplug
@@ -11,12 +13,16 @@ Djava
 dokka
 Dskip
 fakefilesystem
+fasterxml
+flywaydb
 geantyref
 gmazzo
 gradlew
 gson
 hubspot
 javapoet
+javax
+jdbi
 jimfs
 johnrengelman
 kotlinpoet
@@ -32,6 +38,9 @@ okio
 opentest
 outfoxx
 pluginz
+protobuf
+protoc
+sqlobject
 squareup
 stdlib
 swiftpoet
