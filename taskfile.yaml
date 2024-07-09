@@ -39,6 +39,8 @@ tasks:
 
   gradle:
     cmds:
+      - cmd: git add .
+      - cmd: git clean -xfd
       - cmd: >-
           "{{ joinPath .TASKFILE_DIR "gradlew" }}" build
           --no-build-cache
