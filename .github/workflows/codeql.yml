@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: 'CodeQL'
 
 on:
   push:
@@ -6,12 +6,12 @@ on:
   pull_request:
     branches: [main, develop, master]
   schedule:
-    - cron: "40 17 * * 2"
+    - cron: '40 17 * * 2'
 
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
-    runs-on: "ubuntu-latest"
+    runs-on: 'ubuntu-latest'
     timeout-minutes: 360
     permissions:
       # required for all workflows
@@ -60,7 +60,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           # Running setup-java again overwrites the settings.xml
-          distribution: "temurin"
+          distribution: 'temurin'
           java-version: 11
 
       - if: matrix.build-mode == 'manual'
@@ -68,8 +68,8 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
-          build-scan-terms-of-use-agree: "yes"
+          build-scan-terms-of-use-url: 'https://gradle.com/terms-of-service'
+          build-scan-terms-of-use-agree: 'yes'
 
       - if: matrix.build-mode == 'manual'
         shell: bash
@@ -80,4 +80,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{matrix.language}}"
+          category: '/language:${{matrix.language}}'
