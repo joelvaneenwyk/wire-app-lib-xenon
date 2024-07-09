@@ -12,40 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tests:
-    name: Maven Tests
-    runs-on: ubuntu-20.04
-    container: wirebot/cryptobox:1.3.0
-
-    # Enable postgres
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: recursive
-
-      - name: Setup Environment Variables
-        run: |
-          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_URL=postgres:5432/postgres" >> $GITHUB_ENV
-
-      - name: Execute Tests
-        run: |
-          mvn test -DargLine="-Djava.library.path=$LD_LIBRARY_PATH"
-
-      - name: Try to create package
-        run: |
-          mvn package -DskipTests
-
   tests-gradle:
-    needs: tests
     name: Gradle Tests
     runs-on: ubuntu-20.04
     container: wirebot/cryptobox:1.3.0
@@ -86,6 +53,39 @@ jobs:
       - name: Execute Tests
         run: |
           ./gradlew build
+
+  tests:
+    needs: tests-gradle
+    name: Maven Tests
+    runs-on: ubuntu-20.04
+    container: wirebot/cryptobox:1.3.0
+
+    # Enable postgres
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Setup Environment Variables
+        run: |
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_URL=postgres:5432/postgres" >> $GITHUB_ENV
+
+      - name: Execute Tests
+        run: |
+          mvn test -DargLine="-Djava.library.path=$LD_LIBRARY_PATH"
+
+      - name: Try to create package
+        run: |
+          mvn package -DskipTests
 
   build:
     needs: tests
