@@ -1,8 +1,9 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Java template
 
-.idea/
 *.iml
+!/xenon.iml
+
 target/
 data/
 libs/
@@ -10,3 +11,7 @@ libs/
 .project
 .settings
 .DS_Store
+
+build/
+.gradle/
+lib/
