@@ -36,3 +36,12 @@ tasks:
     cmds:
       - cmd: |
           mvn -DskipTests clean deploy
+
+  gradle:
+    cmds:
+      - cmd: >-
+          "{{ joinPath .TASKFILE_DIR "gradlew" }}" build
+          --no-build-cache
+          --dependency-verification=strict
+          --refresh-dependencies
+          --rerun-tasks
