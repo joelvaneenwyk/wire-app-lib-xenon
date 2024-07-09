@@ -5,6 +5,7 @@ version: "3"
 tasks:
   default:
     cmds:
+      - task: gradle
       - task: build
 
   build:
@@ -36,3 +37,14 @@ tasks:
     cmds:
       - cmd: |
           mvn -DskipTests clean deploy
+
+  gradle:
+    cmds:
+      - cmd: git add .
+      - cmd: git clean -xfd
+      - cmd: >-
+          "{{ joinPath .TASKFILE_DIR "gradlew" }}" build
+          --no-build-cache
+          --dependency-verification=strict
+          --refresh-dependencies
+          --rerun-tasks
