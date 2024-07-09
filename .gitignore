@@ -1,6 +1,7 @@
 # Created by .gitignore support plugin (hsz.mobi)
 ### Java template
 
+
 *.iml
 !/xenon.iml
 
@@ -15,3 +16,11 @@ libs/
 build/
 .gradle/
 lib/
+
+node_modules/
+bun.lock
+pnpm-lock.yaml
+tsconfig.json
+.prettierrc.yaml
+package.json
+*.ts
