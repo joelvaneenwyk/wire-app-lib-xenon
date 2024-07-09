@@ -20,6 +20,8 @@ lib/
 node_modules/
 bun.lock
 pnpm-lock.yaml
+package-lock.json
+yarn.lock
 tsconfig.json
 .prettierrc.yaml
 package.json

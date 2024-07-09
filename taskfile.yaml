@@ -1,6 +1,6 @@
 # https://taskfile.dev
 
-version: "3"
+version: '3'
 
 tasks:
   default:
@@ -41,7 +41,18 @@ tasks:
   format:
     cmds:
       - cmd: |
-          npx --yes prettier@latest --write --print-width 120 --plugin=prettier-plugin-java .
+          npm init -y
+        ignore_error: true
+      - cmd: |
+          npm install prettier@latest
+          npm install prettier-plugin-java@latest
+      - cmd: >-
+          "{{ joinPath .TASKFILE_DIR "node_modules" ".bin" "prettier" }}"
+          --single-quote
+          --print-width 120
+          --plugin=prettier-plugin-java
+          --write
+          "{{ .TASKFILE_DIR }}"
 
   gradle:
     cmds:
