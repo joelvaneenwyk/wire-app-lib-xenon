@@ -24,3 +24,7 @@ indent_style = tab
 [*.{xml,html}]
 indent_style = space
 indent_size = 2
+
+[*.{kts,kt}]
+indent_style = space
+indent_size = 4

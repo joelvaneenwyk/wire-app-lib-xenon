@@ -1,0 +1,11 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions:
+  - name: wire-app-lib-xenon
+    path: .github/config/cspell-wire-app-lib-xenon.dict
+    addWords: true
+dictionaries:
+  - wire-app-lib-xenon
+words: []
+ignoreWords: []
+import: []

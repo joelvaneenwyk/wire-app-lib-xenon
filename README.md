@@ -13,7 +13,7 @@ Wire Bots base library
         <artifactId>xenon</artifactId>
         <version>1.5.0</version>
     </dependency>
-<dependencies>
+</dependencies>
 ```
 
 ## How to build the project
