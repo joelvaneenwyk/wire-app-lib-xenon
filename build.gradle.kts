@@ -5,9 +5,13 @@
 import com.google.protobuf.gradle.id
 import org.gradle.kotlin.dsl.`java-library`
 
+group = "com.wire"
+version = "1.5.5"
+description = "Xenon"
+
 plugins {
-    `java-library`
-    `maven-publish`
+    id("java-library")
+    id("maven-publish")
     id("com.google.protobuf") version("0.9.4")
 }
 
@@ -55,7 +59,6 @@ protobuf {
         artifact = "com.google.protobuf:protoc:3.25.3"
     }
 
-
     generateProtoTasks {
         ofSourceSet("test").forEach {
             it.plugins {
@@ -68,21 +71,6 @@ protobuf {
         }
     }
 }
-
-buildscript {
-    dependencies {
-        classpath(libs.protobuf.gradlePlugin)
-    }
-
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
-
-group = "com.wire"
-version = "1.5.5"
-description = "Xenon"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -98,10 +86,15 @@ publishing {
 
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
-    options.compilerArgs.addAll(listOf("-Xmaxerrs", "1000", "-Xmaxwarns", "1000"))
+    options.compilerArgs.addAll(listOf(
+        "-Xlint:-options",
+        "-Xmaxerrs", "1000",
+        "-Xmaxwarns", "1000"))
 }
 
 tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
+    if (JavaVersion.current().isJava8Compatible) {
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
 }
-
