@@ -33,7 +33,6 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          # Running setup-java again overwrites the settings.xml
           distribution: 'temurin'
           java-version: 11
 
