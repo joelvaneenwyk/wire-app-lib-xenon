@@ -18,15 +18,8 @@
 
 package com.wire.xenon.assets;
 
-import com.google.protobuf.ByteString;
-import com.waz.model.Messages;
 import com.wire.xenon.tools.Util;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.UUID;
-import javax.imageio.ImageIO;
 
 public class ImageAsset extends AssetBase {
 

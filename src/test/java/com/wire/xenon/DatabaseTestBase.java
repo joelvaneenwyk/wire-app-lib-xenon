@@ -20,7 +20,7 @@ public abstract class DatabaseTestBase {
         String user = System.getenv("POSTGRES_USER");
         String password = System.getenv("POSTGRES_PASSWORD");
 
-        Class driverClass = Class.forName("org.postgresql.Driver");
+        Class<?> driverClass = Class.forName("org.postgresql.Driver");
         final Driver driver = (Driver) driverClass.getDeclaredConstructor().newInstance();
         DriverManager.registerDriver(driver);
 

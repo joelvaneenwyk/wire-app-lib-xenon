@@ -18,8 +18,6 @@
 
 package com.wire.xenon.assets;
 
-import com.google.protobuf.ByteString;
-import com.waz.model.Messages;
 import com.wire.xenon.tools.Util;
 import java.io.File;
 import java.io.FileInputStream;
