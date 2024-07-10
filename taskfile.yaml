@@ -16,22 +16,28 @@ tasks:
           mvn -B verify
 
   db:
+    internal: true
     deps: [stop-db]
     cmds:
       - cmd: |
-          docker-compose up -d db
+          docker compose up -d db
 
   stop-db:
+    internal: true
     cmds:
       - cmd: |
-          docker-compose stop db
+          docker compose stop db
         ignore_error: true
 
   test:
     deps: [db]
+    env:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_URL: localhost:5432/postgres
     cmds:
       - cmd: |
-          export POSTGRES_USER=postgres && export POSTGRES_PASSWORD=postgres && export POSTGRES_URL=localhost:5432/postgres && mvn test;
+          mvn test
 
   publish:
     cmds:
@@ -53,6 +59,8 @@ tasks:
           --plugin=prettier-plugin-java
           --write
           "{{ .TASKFILE_DIR }}"
+      - cmd: |
+          rm -rf node_modules package.json package-lock.json
 
   gradle:
     cmds:
