@@ -24,7 +24,7 @@ jackson-databind = "2.15.2"
 javax-validation = "2.0.1.Final"
 jdbi3-sqlobject = "3.45.2"
 junit-jupiter-api = "5.9.2"
-junit-jupiter-engine = "5.9.2"
+junit-jupiter-engine = "5.10.3"
 slf4j-simple = "2.0.13"
 
 [libraries]
