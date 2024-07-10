@@ -14,7 +14,7 @@ grpc = "1.65.0"
 protobuf = "3.24.3"
 protobufGradlePlugin = "0.9.4"
 
-cryptobox4j = "1.3.0"
+cryptobox4j = "1.4.0"
 
 postgresql = "42.7.3"
 
