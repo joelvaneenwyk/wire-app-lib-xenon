@@ -4,6 +4,7 @@ assertj
 buildconfig
 checkerframework
 classpath
+conv
 cryptobox
 databind
 dataformat
@@ -38,10 +39,10 @@ okio
 opentest
 outfoxx
 pluginz
+Prekeys
 protobuf
 protoc
 sqlobject
-Prekeys
 squareup
 stdlib
 swiftpoet

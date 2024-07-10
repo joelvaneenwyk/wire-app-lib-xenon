@@ -35,7 +35,9 @@ tasks:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_URL: localhost:5432/postgres
+      FLYWAY_CLEAN_DISABLED: false
     cmds:
+      - defer: stop-db
       - cmd: |
           mvn test
 
