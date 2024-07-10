@@ -26,3 +26,5 @@ tsconfig.json
 .prettierrc.yaml
 package.json
 *.ts
+
+out/
