@@ -11,30 +11,35 @@ dotenv: [.env]
 
 tasks:
   default:
+    desc: Run build
     cmds:
       - task: build
 
   rebuild:
+    desc: Clean and build
     cmds:
       - task: clean
       - task: build
 
   build:
+    desc: Build the project using both Gradle and Maven
     cmds:
-      - task: gradle
-      - task: mvn
+      - task: gradle-build
+      - task: maven-build
 
   clean:
+    desc: Clean all intermediate files using Git and build tools
     cmds:
       - cmd: git add .
       - cmd: git clean -xfd
 
   test:
+    desc: Run all tests
     cmds:
       - task: gradle-test
 
   gradle-test:
-    aliases: [gt]
+    aliases: [gt, test-gradle]
     internal: true
     deps: [gradle]
     cmds:
@@ -43,18 +48,8 @@ tasks:
       - cmd: |
           "{{ fromSlash .GRADLE_EXE}}" test
 
-  maven:
-    aliases: [mvn, m]
-    preconditions:
-      - mvn --version
-    cmds:
-      - cmd: |
-          mvn -f "{{ fromSlash .MAVEN_POM }}" test-compile
-      - cmd: |
-          mvn -f "{{ fromSlash .MAVEN_POM }}" package
-      - task: maven-test
-
   gradle-build:
+    internal: true
     aliases: [gradle, gradlew, g]
     cmds:
       - cmd: >-
@@ -65,6 +60,17 @@ tasks:
           --dependency-verification=strict
           --refresh-dependencies
           --rerun-tasks
+
+  maven-build:
+    aliases: [mvn, m, maven]
+    preconditions:
+      - mvn --version
+    cmds:
+      - cmd: |
+          mvn -f "{{ fromSlash .MAVEN_POM }}" test-compile
+      - cmd: |
+          mvn -f "{{ fromSlash .MAVEN_POM }}" package
+      - task: maven-test
 
   maven-test:
     internal: true
