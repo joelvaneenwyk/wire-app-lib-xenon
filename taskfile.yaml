@@ -4,7 +4,10 @@ version: '3'
 
 vars:
   REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
-  GRADLE_EXE: '{{ joinPath .TASKFILE_DIR "gradlew" }}'
+  GRADLE_EXE: '{{.TASKFILE_DIR}}/gradlew{{ if eq OS "windows" }}.bat{{end}}'
+  MAVEN_POM: '{{.TASKFILE_DIR}}/pom.xml'
+
+dotenv: [.env]
 
 tasks:
   default:
@@ -21,7 +24,10 @@ tasks:
       - mvn --version
     cmds:
       - cmd: |
-          mvn -B verify
+          mvn -f "{{ fromSlash .MAVEN_POM }}" test-compile
+      - cmd: |
+          mvn -f "{{ fromSlash .MAVEN_POM }}" package
+      - task: mvn-test
 
   db:
     internal: true
@@ -36,18 +42,6 @@ tasks:
       - cmd: |
           docker compose stop db
         ignore_error: true
-
-  test:
-    deps: [db]
-    env:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_URL: localhost:5432/postgres
-      FLYWAY_CLEAN_DISABLED: false
-    cmds:
-      - defer: stop-db
-      - cmd: |
-          mvn test
 
   publish:
     cmds:
@@ -97,10 +91,18 @@ tasks:
       - cmd: git add .
       - cmd: git clean -xfd
       - cmd: >-
-          "{{ fromPath .GRADLE_EXE }}" clean
+          "{{ fromSlash .GRADLE_EXE }}" clean
       - cmd: >-
-          "{{ fromPath .GRADLE_EXE }}" build
+          "{{ fromSlash .GRADLE_EXE }}" build
           --no-build-cache
           --dependency-verification=strict
           --refresh-dependencies
           --rerun-tasks
+
+  mvn-test:
+    internal: true
+    deps: [db]
+    cmds:
+      - defer: stop-db
+      - cmd: |
+          mvn test
