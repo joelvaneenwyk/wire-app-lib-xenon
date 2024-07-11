@@ -19,6 +19,20 @@ tasks:
       - task: gradle
       - task: mvn
 
+  test:
+    cmds:
+      - task: gradle-test
+
+  gradle-test:
+    aliases: [gt]
+    internal: true
+    deps: [gradle]
+    cmds:
+      - task: start-db
+      - defer: stop-db
+      - cmd: |
+          "{{ fromSlash .GRADLE_EXE}}" test
+
   mvn:
     preconditions:
       - mvn --version
@@ -29,14 +43,16 @@ tasks:
           mvn -f "{{ fromSlash .MAVEN_POM }}" package
       - task: mvn-test
 
-  db:
+  db-start:
+    aliases: [start-db]
     internal: true
     deps: [stop-db]
     cmds:
       - cmd: |
           docker compose up -d db
 
-  stop-db:
+  db-stop:
+    aliases: [stop-db]
     internal: true
     cmds:
       - cmd: |
