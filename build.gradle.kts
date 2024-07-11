@@ -4,13 +4,26 @@
  * This project uses @Incubating APIs which are subject to change.
  */
 
+import com.google.protobuf.gradle.id
+import org.gradle.kotlin.dsl.`java-library`
+
+group = "com.wire"
+version = "1.4.6"
+description = "Xenon"
+
 plugins {
     `java-library`
     `maven-publish`
+    id("java-library")
+    id("maven-publish")
+    id("com.google.protobuf") version("0.9.4")
 }
 
 repositories {
+    gradlePluginPortal()
     mavenLocal()
+    mavenCentral()
+    google()
     maven {
         url = uri("https://repo.maven.apache.org/maven2/")
     }
@@ -31,12 +44,37 @@ dependencies {
     testImplementation(libs.org.slf4j.slf4j.simple)
 }
 
-group = "com.wire"
-version = "1.4.6"
-description = "Xenon"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+protobuf {
+    plugins {
+        id("grpc") {
+            artifact = libs.grpc.genJava.get().toString()
+        }
+    }
+
+    protoc {
+        // TODO(Benoit) Replace with `artifact = libs.protobuf.protoc.get().toString()` once gRPC-java
+        //  starts supporting protoc 4+. See https://github.com/grpc/grpc-java/issues/10976
+        artifact = libs.protobuf.protoc.get().toString()
+
+        // In case of issues, re-enable the following line
+        // artifact = "com.google.protobuf:protoc:3.25.3"
+    }
+
+    generateProtoTasks {
+        ofSourceSet("test").forEach {
+            it.plugins {
+                // Apply the "grpc" plugin whose spec is defined above, without
+                // options.  Note the braces cannot be omitted, otherwise the
+                // plugin will not be added. This is because of the implicit way
+                // NamedDomainObjectContainer binds the methods.
+                id("grpc") {}
+            }
+        }
+    }
+}
 
 java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
     withJavadocJar()
 }
@@ -49,8 +87,15 @@ publishing {
 
 tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
+    options.compilerArgs.addAll(listOf(
+        "-Xlint:-options",
+        "-Xmaxerrs", "1000",
+        "-Xmaxwarns", "1000"))
 }
 
 tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
+    if (JavaVersion.current().isJava8Compatible) {
+        (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
 }
