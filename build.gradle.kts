@@ -56,19 +56,6 @@ java {
     withJavadocJar()
 }
 
-// add step to compile Java source files under the task directory
-//tasks.register<JavaCompile>("compileJavaSources") {
-//    classpath = configurations["compileClasspath"]
-//    destinationDir = file("$buildDir/classes/java/main")
-//    options.encoding = "UTF-8"
-//}
-
-//sourceSets {
-//    test {
-//        java.srcDir("src/test/java")
-//    }
-//}
-
 protobuf {
     plugins {
         id("grpc") {
@@ -77,12 +64,7 @@ protobuf {
     }
 
     protoc {
-        // TODO(Benoit) Replace with `artifact = libs.protobuf.protoc.get().toString()` once gRPC-java
-        //  starts supporting protoc 4+. See https://github.com/grpc/grpc-java/issues/10976
         artifact = libs.protobuf.protoc.get().toString()
-
-        // In case of issues, re-enable the following line
-        // artifact = "com.google.protobuf:protoc:3.25.3"
     }
 
     generateProtoTasks {
@@ -128,6 +110,7 @@ tasks.named<Test>("test") {
     testLogging {
         showStandardStreams = true
         showExceptions = true
+
         events("passed")
     }
 }
