@@ -2,13 +2,21 @@
 
 version: '3'
 
+vars:
+  REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
+  GRADLE_EXE: '{{ joinPath .TASKFILE_DIR "gradlew" }}'
+
 tasks:
   default:
     cmds:
-      - task: gradle
       - task: build
 
   build:
+    cmds:
+      - task: gradle
+      - task: mvn
+
+  mvn:
     preconditions:
       - mvn --version
     cmds:
@@ -47,13 +55,15 @@ tasks:
           mvn -DskipTests clean deploy
 
   format:
+    deps: [npm-clean]
+    silent: true
     cmds:
+      - defer: { task: npm-clean }
       - cmd: |
-          npm init -y
+          npm init -y {{.REDIRECT_TO_NULL}}
         ignore_error: true
       - cmd: |
-          npm install prettier@latest
-          npm install prettier-plugin-java@latest
+          npm install prettier@latest prettier-plugin-java@latest {{.REDIRECT_TO_NULL}}
       - cmd: >-
           "{{ joinPath .TASKFILE_DIR "node_modules" ".bin" "prettier" }}"
           --single-quote
@@ -61,15 +71,35 @@ tasks:
           --plugin=prettier-plugin-java
           --write
           "{{ .TASKFILE_DIR }}"
+
+  npm-clean:
+    silent: true
+    status:
+      - test ! -f package.json
+      - test ! -f package-lock.json
+      - test ! -d node_modules
+    cmds:
       - cmd: |
           rm -rf node_modules package.json package-lock.json
+        platforms: [linux, darwin]
+      - cmd: |
+          cmd.exe /D /E:ON /C rmdir /s /q node_modules {{.REDIRECT_TO_NULL}}
+        platforms: [windows]
+        ignore_error: true
+      - cmd: |
+          cmd.exe /D /E:ON /C del package.json package-lock.json {{.REDIRECT_TO_NULL}}
+        platforms: [windows]
+        ignore_error: true
+      - echo "Removed left-over files from running 'npm' locally."
 
   gradle:
     cmds:
       - cmd: git add .
       - cmd: git clean -xfd
       - cmd: >-
-          "{{ joinPath .TASKFILE_DIR "gradlew" }}" build
+          "{{ fromPath .GRADLE_EXE }}" clean
+      - cmd: >-
+          "{{ fromPath .GRADLE_EXE }}" build
           --no-build-cache
           --dependency-verification=strict
           --refresh-dependencies

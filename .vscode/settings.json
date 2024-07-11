@@ -1,23 +1,18 @@
 {
-  "cSpell.words": [
-    "Cryptobox",
-    "databind",
-    "Dejan",
-    "fasterxml",
-    "flywaydb",
-    "Forst",
-    "javadocs",
-    "javax",
-    "jdbi",
-    "Kovacevic",
-    "Lukas",
-    "ossrh",
-    "pinentry",
-    "protobuf",
-    "protobufs",
-    "protoc",
-    "sonatype",
-    "sqlobject"
-  ],
+  "java.autobuild.enabled": false,
+  "[kotlin]": {
+    "editor.defaultFormatter": "vscjava.vscode-gradle"
+  },
+  "[gradle-kotlin-dsl]": {
+    "editor.defaultFormatter": "vscjava.vscode-gradle"
+  },
+  "[json][jsonc][yaml][java][gradle-kotlin-dsl][kotlin]": {
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modificationsIfAvailable",
+    "editor.formatOnPaste": false,
+    "editor.formatOnType": false
+  },
+  "java.cleanup.actions": ["renameFileToType"],
   "java.configuration.updateBuildConfiguration": "automatic"
 }

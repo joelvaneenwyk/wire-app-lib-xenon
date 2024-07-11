@@ -4,7 +4,7 @@ Wire Bots base library
 
 ## How to use it?
 
-- In your `pom.xml`:
+In your `pom.xml`:
 
 ```xml
 <dependencies>
@@ -18,8 +18,8 @@ Wire Bots base library
 
 ## How to build the project
 
-Requirements:
+### Requirements
 
-- [Java >= 11](http://www.oracle.com)
+- [Java >=11](http://www.oracle.com)
 - [Maven](https://maven.apache.org)
 - [Cryptobox4j](https://github.com/wireapp/cryptobox4j)

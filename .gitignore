@@ -1,6 +1,10 @@
+#
+# wire-app-lib-xenon | Ignore List
+#
 # Created by .gitignore support plugin (hsz.mobi)
-### Java template
+#
 
+.git/
 
 *.iml
 !/xenon.iml
