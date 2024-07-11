@@ -14,3 +14,7 @@ libs/
 .gradle/
 build/
 .vscode/
+node_modules/
+
+package.json
+package-lock.json
