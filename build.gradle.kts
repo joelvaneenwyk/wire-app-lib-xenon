@@ -10,7 +10,7 @@ version = "1.5.5"
 description = "Xenon"
 
 plugins {
-    id("java-library")
+    `java-library`
     id("maven-publish")
     id("com.google.protobuf") version("0.9.4")
 }
@@ -23,28 +23,51 @@ repositories {
 }
 
 dependencies {
-    implementation("com.wire", "cryptobox4j", "1.3.0")
+    api(libs.nebula.lint)
+    api(libs.cryptobox4j)
 
-    implementation("com.fasterxml.jackson.core", "jackson-annotations", "2.15.1")
-    implementation("com.fasterxml.jackson.core", "jackson-databind", "2.15.2")
+    runtimeOnly(libs.flyway.gradle.plugin)
 
-    implementation("javax.validation", "validation-api", "2.0.1.Final")
+    implementation(libs.cryptobox4j)
+    implementation(libs.jackson.annotations)
+    implementation(libs.jackson.databind)
 
-    implementation("com.google.protobuf", "protobuf-java", "3.24.3")
+    implementation(libs.javax.validation)
+    implementation(libs.protobuf.java)
+    implementation(libs.jdbi3.sqlobject)
 
-    implementation("org.jdbi", "jdbi3-sqlobject", "3.37.1")
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
 
-    implementation("org.postgresql", "postgresql", "42.5.4")
+    testImplementation(libs.postgresql)
+    testImplementation(libs.flyway.core)
+    testImplementation(libs.slf4j.simple)
+    testImplementation(libs.junit)
 
-    testImplementation("org.junit.jupiter", "junit-jupiter-api", "5.9.2")
-    testImplementation("org.junit.jupiter", "junit-jupiter-engine", "5.9.2")
-
-    testImplementation("org.postgresql", "postgresql", "42.5.4")
-
-    testImplementation("org.flywaydb", "flyway-core", "9.15.1")
-
-    testImplementation("org.slf4j", "slf4j-simple", "2.0.6")
+    testImplementation(libs.junit)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.flyway.gradle.plugin)
 }
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
+    withJavadocJar()
+}
+
+// add step to compile Java source files under the task directory
+//tasks.register<JavaCompile>("compileJavaSources") {
+//    classpath = configurations["compileClasspath"]
+//    destinationDir = file("$buildDir/classes/java/main")
+//    options.encoding = "UTF-8"
+//}
+
+//sourceSets {
+//    test {
+//        java.srcDir("src/test/java")
+//    }
+//}
 
 protobuf {
     plugins {
@@ -75,12 +98,6 @@ protobuf {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    withSourcesJar()
-    withJavadocJar()
-}
-
 publishing {
     publications.create<MavenPublication>("maven") {
         from(components["java"])
@@ -91,6 +108,7 @@ tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf(
         "-Xlint:-options",
+        "-Xlint:deprecation",
         "-Xmaxerrs", "1000",
         "-Xmaxwarns", "1000"))
 }
@@ -99,5 +117,17 @@ tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
     if (JavaVersion.current().isJava8Compatible) {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
+    }
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
+
+    maxParallelForks = 1
+
+    testLogging {
+        showStandardStreams = true
+        showExceptions = true
+        events("passed")
     }
 }

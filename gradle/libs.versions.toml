@@ -2,13 +2,7 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-android = "4.1.1.4"
-junit = "4.13.2"
-
 kotlin = "2.0.0"
-kotlinpoet = "1.18.0"
-ktlint = "0.48.2"
-
 grpc = "1.65.0"
 
 protobuf = "3.24.3"
@@ -18,7 +12,6 @@ cryptobox4j = "1.4.0"
 
 postgresql = "42.7.3"
 
-flyway-core = "10.15.2"
 jackson-annotations = "2.17.2"
 jackson-databind = "2.17.2"
 javax-validation = "2.0.1.Final"
@@ -27,8 +20,20 @@ junit-jupiter-api = "5.10.3"
 junit-jupiter-engine = "5.10.3"
 slf4j-simple = "2.0.13"
 
+flyway-core = "9.15.2"
+flyway-gradle-plugin = "9.15.2"
+
+nebula-lint = "latest.release"
+
+junit = "5.10.3"
+junit-platform-launcher = "1.10.3"
+
 [libraries]
-junit = { module = "junit:junit", version.ref = "junit" }
+nebula-lint = { module = "com.netflix.nebula:gradle-lint-plugin", version.ref = "nebula-lint" }
+
+# // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
 
 # `plugins` is a keyword in version catalogs.
 # Check https://docs.gradle.org/current/userguide/platforms.html#sec:version-catalog-plugin
@@ -55,9 +60,11 @@ cryptobox4j = { module = "com.wire:cryptobox4j", version.ref = "cryptobox4j" }
 
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 
-flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-core" }
 javax-validation = { module = "javax.validation:validation-api", version.ref = "javax-validation" }
 jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi3-sqlobject" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple" }
+
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-core" }
+flyway-gradle-plugin = { module = "org.flywaydb:flyway-gradle-plugin", version.ref = "flyway-gradle-plugin" }
