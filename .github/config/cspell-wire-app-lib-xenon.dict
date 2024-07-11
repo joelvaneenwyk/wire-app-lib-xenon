@@ -24,6 +24,7 @@ gson
 hubspot
 javapoet
 javax
+jdbc
 jdbi
 jimfs
 johnrengelman
