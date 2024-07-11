@@ -13,3 +13,4 @@ libs/
 
 .gradle/
 build/
+.vscode/
