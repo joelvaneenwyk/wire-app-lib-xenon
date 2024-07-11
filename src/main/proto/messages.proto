@@ -335,7 +335,7 @@ message Calling {
 }
 
 message DataTransfer {
-  optional TrackingIdentifier trackingIdentifier = 1;
+  optional TrackingIdentifier tracking_identifier = 1;
 }
 
 message TrackingIdentifier {
