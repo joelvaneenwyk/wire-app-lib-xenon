@@ -9,7 +9,7 @@ on:
   pull_request:
     branches: [main, develop, release/**]
   release:
-    types: [created]
+    types: [created, edited]
   workflow_dispatch:
 
 jobs:
@@ -90,7 +90,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
@@ -113,7 +113,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Publish to the Maven Central Repository
+      - name: Publish // Maven Central
         continue-on-error: true
         run: mvn -DskipTests --batch-mode deploy
         env:
@@ -127,9 +127,8 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Publish to GitHub Packages
-        continue-on-error: true
-        run: mvn -DskipTests --batch-mode deploy
+      - name: Publish // GitHub
+        run: gradle -Pversion="${{ github.event.release.tag_name }}" build publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          MAVEN_OPTS: '--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
+          GRADLE_OPTS: '--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.text=ALL-UNNAMED --add-opens=java.desktop/java.awt.font=ALL-UNNAMED'
