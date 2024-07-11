@@ -28,7 +28,7 @@ slf4j-simple = "2.0.13"
 
 com-fasterxml-jackson-core-jackson-annotations = "2.14.1"
 com-fasterxml-jackson-core-jackson-databind = "2.14.1"
-com-google-protobuf-protobuf-java = "3.21.9"
+com-google-protobuf-protobuf-java = "3.24.3"
 com-wire-cryptobox4j = "1.2.2"
 javax-validation-validation-api = "2.0.1.Final"
 org-flywaydb-flyway-core = "9.8.3"
