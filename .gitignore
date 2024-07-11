@@ -10,3 +10,6 @@ libs/
 .project
 .settings
 .DS_Store
+
+.gradle/
+build/
