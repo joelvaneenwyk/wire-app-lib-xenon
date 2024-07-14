@@ -17,6 +17,7 @@ dotenv
 Dskip
 fakefilesystem
 fasterxml
+fileurl
 flywaydb
 Forst
 geantyref
