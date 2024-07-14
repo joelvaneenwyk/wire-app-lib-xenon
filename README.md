@@ -11,7 +11,7 @@ In your `pom.xml`:
     <dependency>
         <groupId>com.wire</groupId>
         <artifactId>xenon</artifactId>
-        <version>1.5.0</version>
+        <version>1.5.6</version>
     </dependency>
 </dependencies>
 ```

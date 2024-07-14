@@ -6,7 +6,7 @@ import com.google.protobuf.gradle.id
 import org.gradle.kotlin.dsl.`java-library`
 
 group = "com.wire"
-version = "1.5.5"
+version = "1.5.6"
 description = "Xenon"
 
 plugins {
@@ -18,7 +18,6 @@ plugins {
 repositories {
     gradlePluginPortal()
     mavenCentral()
-    mavenLocal()
     google()
 }
 
