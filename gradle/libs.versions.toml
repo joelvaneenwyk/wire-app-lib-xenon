@@ -2,69 +2,43 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-kotlin = "2.0.0"
-grpc = "1.65.0"
-
-protobuf = "3.24.3"
-protobufGradlePlugin = "0.9.4"
-
 cryptobox4j = "1.4.0"
-
-postgresql = "42.7.3"
-
+flyway = "10.15.2"
+grpc = "1.65.0"
 jackson-annotations = "2.17.2"
 jackson-databind = "2.17.2"
 javax-validation = "2.0.1.Final"
 jdbi3-sqlobject = "3.45.2"
-junit-jupiter-api = "5.10.3"
-junit-jupiter-engine = "5.10.3"
-slf4j-simple = "2.0.13"
-
-flyway-core = "9.15.2"
-flyway-gradle-plugin = "9.15.2"
-
-nebula-lint = "latest.release"
-
 junit = "5.10.3"
 junit-platform-launcher = "1.10.3"
+kotlin = "2.0.0"
+nebula-lint = "latest.release"
+postgresql = "42.7.3"
+protobuf = "3.24.3"
+slf4j-simple = "2.0.13"
 
 [libraries]
-nebula-lint = { module = "com.netflix.nebula:gradle-lint-plugin", version.ref = "nebula-lint" }
-
-# // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
-
-# `plugins` is a keyword in version catalogs.
-# Check https://docs.gradle.org/current/userguide/platforms.html#sec:version-catalog-plugin
-#  if we ever wanna migrate to this.
 android = { module = "com.android.tools.build:gradle", version = "8.5.0" }
-
 binaryCompatibilityValidator = { module = "org.jetbrains.kotlinx.binary-compatibility-validator:org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version = "0.15.1" }
-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-
+cryptobox4j = { module = "com.wire:cryptobox4j", version.ref = "cryptobox4j" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-gradle-plugin = { module = "org.flywaydb:flyway-gradle-plugin", version.ref = "flyway" }
 grpc-genJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
 grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc" }
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
-
-protobuf-gradlePlugin = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobufGradlePlugin" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
+javax-validation = { module = "javax.validation:validation-api", version.ref = "javax-validation" }
+jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi3-sqlobject" }
+junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }
+kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+nebula-lint = { module = "com.netflix.nebula:gradle-lint-plugin", version.ref = "nebula-lint" }
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
 protobuf-javaUtil = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
-
-jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
-
-cryptobox4j = { module = "com.wire:cryptobox4j", version.ref = "cryptobox4j" }
-
-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
-
-javax-validation = { module = "javax.validation:validation-api", version.ref = "javax-validation" }
-jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi3-sqlobject" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter-api" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple" }
-
-flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway-core" }
-flyway-gradle-plugin = { module = "org.flywaydb:flyway-gradle-plugin", version.ref = "flyway-gradle-plugin" }

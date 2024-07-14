@@ -9,48 +9,44 @@ group = "com.wire"
 version = "1.5.6"
 description = "Xenon"
 
-plugins {
-    `java-library`
-    id("maven-publish")
-    id("com.google.protobuf") version("0.9.4")
-}
-
 repositories {
     gradlePluginPortal()
     mavenCentral()
     google()
 }
 
+plugins {
+    `java-library`
+    id("maven-publish")
+    id("com.google.protobuf") version("0.9.4")
+}
+
 dependencies {
     api(libs.nebula.lint)
     api(libs.cryptobox4j)
 
-    runtimeOnly(libs.flyway.gradle.plugin)
-
     implementation(libs.cryptobox4j)
     implementation(libs.jackson.annotations)
     implementation(libs.jackson.databind)
-
     implementation(libs.javax.validation)
     implementation(libs.protobuf.java)
     implementation(libs.jdbi3.sqlobject)
 
+    runtimeOnly(libs.flyway.gradle.plugin)
+
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
-
     testImplementation(libs.postgresql)
     testImplementation(libs.flyway.core)
     testImplementation(libs.slf4j.simple)
-    testImplementation(libs.junit)
 
-    testImplementation(libs.junit)
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.flyway.gradle.plugin)
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_9
     withSourcesJar()
     withJavadocJar()
 }
