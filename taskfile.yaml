@@ -2,8 +2,6 @@
 
 version: '3'
 
-env:
-  MAVEN_OPTS:
 vars:
   REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
   GRADLE_EXE: '{{.TASKFILE_DIR}}/gradlew{{ if eq OS "windows" }}.bat{{end}}'
