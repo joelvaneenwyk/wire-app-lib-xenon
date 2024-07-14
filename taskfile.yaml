@@ -2,13 +2,15 @@
 
 version: '3'
 
+env:
+  MAVEN_OPTS:
 vars:
   REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
   GRADLE_EXE: '{{.TASKFILE_DIR}}/gradlew{{ if eq OS "windows" }}.bat{{end}}'
   MAVEN_POM: '{{.TASKFILE_DIR}}/pom.xml'
   MAVEN_EXE:  "scoop/apps/maven/current/bin/mvn.cmd"
   MVN_SCOOP: "{{ joinPath .USERPROFILE .MAVEN_EXE }}"
-  MVN: '{{ if eq OS "windows" }}{{.MVN_SCOOP}}{{ else }}mvn{{ end }}'
+  MVN: '{{ if eq OS "windows" }}set "MAVEN_OPTS=" && call {{.MVN_SCOOP}}{{ else }}mvn{{ end }}'
   RUN: '{{ if eq OS "windows" }}cmd.exe /D /E:ON /C{{ else }}bash -c{{ end }}'
 
 dotenv: [.env]
@@ -47,8 +49,8 @@ tasks:
     internal: true
     deps: [gradle]
     cmds:
-      - task: start-db
-      - defer: stop-db
+      - task: db-start
+      - defer: db-stop
       - cmd: |
           "{{ fromSlash .GRADLE_EXE}}" test
 
@@ -68,23 +70,19 @@ tasks:
 
   maven-build:
     aliases: [mvn, m, maven]
-    env:
-      MAVEN_OPTS: -Dmaven.repo.local=.m2
-    preconditions:
-      - '{{.RUN}} "{{fromSlash .MVN}}" --version'
     cmds:
       - cmd: |
           {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" test-compile
       - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" package
+          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" package -DskipTests
       - task: maven-test
 
   maven-test:
     internal: true
     aliases: [mt, maven-test, mvn-test]
-    deps: [db]
     cmds:
-      - defer: stop-db
+      - task: db-start
+      - defer: db-stop
       - cmd: |
           {{.RUN}} "{{fromSlash .MVN}}" test
 
@@ -94,15 +92,13 @@ tasks:
           {{.RUN}} "{{fromSlash .MVN}}" -DskipTests clean deploy
 
   db-start:
-    aliases: [start-db]
     internal: true
-    deps: [stop-db]
     cmds:
+      - task: db-stop
       - cmd: |
           docker compose up -d db
 
   db-stop:
-    aliases: [stop-db]
     internal: true
     cmds:
       - cmd: |
