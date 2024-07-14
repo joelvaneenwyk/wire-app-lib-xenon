@@ -42,9 +42,10 @@ dependencies {
     testImplementation(libs.postgresql)
     testImplementation(libs.slf4j.simple)
 
-    runtimeOnly(libs.flyway.gradle)
-    testRuntimeOnly(libs.flyway.gradle)
+    implementation(libs.flyway.gradle)
+    implementation(libs.flyway.core)
 
+    testImplementation(libs.flyway.gradle)
     testImplementation(libs.flyway.core)
 }
 
