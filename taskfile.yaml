@@ -48,7 +48,7 @@ tasks:
     deps: [gradle]
     cmds:
       - task: db-start
-      - defer: db-stop
+      - defer: { task: db-stop }
       - cmd: |
           "{{ fromSlash .GRADLE_EXE}}" test
 
@@ -80,7 +80,7 @@ tasks:
     aliases: [mt, maven-test, mvn-test]
     cmds:
       - task: db-start
-      - defer: db-stop
+      - defer: { task: db-stop }
       - cmd: |
           {{.RUN}} "{{fromSlash .MVN}}" test
 
