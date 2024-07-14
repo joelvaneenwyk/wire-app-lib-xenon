@@ -13,30 +13,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-gradle:
-    name: Gradle Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          submodules: recursive
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 11
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      - name: Build
-        run: |
-          ./gradlew build
-
-  build-maven:
-    name: Maven Build
+  build:
+    name: Build // ${{ matrix.build }}
+    strategy:
+      matrix:
+        build: [gradle, maven]
+        os: [ubuntu-latest]
+        java: [11]
 
     runs-on: ubuntu-latest
     container: wirebot/cryptobox:1.3.0
@@ -58,16 +41,33 @@ jobs:
           echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
           echo "POSTGRES_URL=postgres:5432/postgres" >> $GITHUB_ENV
 
-      - name: Execute Tests
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - if: matrix.build == 'gradle'
+        name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - if: matrix.build == 'gradle'
+        name: Build
+        run: |
+          ./gradlew build
+
+      - if: matrix.build == 'maven'
+        name: Execute Tests
         run: |
           mvn test -DargLine="-Djava.library.path=$LD_LIBRARY_PATH"
 
-      - name: Try to create package
+      - if: matrix.build == 'maven'
+        name: Try to create package
         run: |
           mvn package -DskipTests
 
   publish:
-    needs: [build-maven, build-gradle]
+    needs: [build]
     name: 'Package // Publish'
     runs-on: ubuntu-latest
 
