@@ -15,15 +15,7 @@ on:
 jobs:
   build-gradle:
     name: Gradle Build
-
-    runs-on: ubuntu-20.04
-    container: wirebot/cryptobox:1.3.0
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,20 +31,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Setup Environment Variables
-        run: |
-          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
-          echo "POSTGRES_URL=postgres:5432/postgres" >> $GITHUB_ENV
-
-      - name: Execute Tests
+      - name: Build
         run: |
           ./gradlew build
 
   build-maven:
     name: Maven Build
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container: wirebot/cryptobox:1.3.0
     services:
       postgres:
