@@ -5,8 +5,7 @@
 cryptobox4j = "1.4.0"
 flyway = "10.15.2"
 grpc = "1.65.0"
-jackson-annotations = "2.17.2"
-jackson-databind = "2.17.2"
+jackson = "2.17.2"
 javax-validation = "2.0.1.Final"
 jdbi3-sqlobject = "3.45.2"
 junit = "5.10.3"
@@ -27,11 +26,10 @@ grpc-genJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
 grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc" }
 grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
-jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson-annotations" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
 javax-validation = { module = "javax.validation:validation-api", version.ref = "javax-validation" }
 jdbi3-sqlobject = { module = "org.jdbi:jdbi3-sqlobject", version.ref = "jdbi3-sqlobject" }
-junit = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform-launcher" }

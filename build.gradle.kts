@@ -29,19 +29,18 @@ dependencies {
     implementation(libs.jackson.annotations)
     implementation(libs.jackson.databind)
     implementation(libs.javax.validation)
-    implementation(libs.protobuf.java)
     implementation(libs.jdbi3.sqlobject)
+    implementation(libs.protobuf.java)
 
-    runtimeOnly(libs.flyway.gradle.plugin)
-
-    testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
+
     testImplementation(libs.postgresql)
-    testImplementation(libs.flyway.core)
     testImplementation(libs.slf4j.simple)
 
-    testRuntimeOnly(libs.junit.platform.launcher)
+    runtimeOnly(libs.flyway.gradle.plugin)
+    testImplementation(libs.flyway.core)
     testRuntimeOnly(libs.flyway.gradle.plugin)
 }
 
