@@ -17,7 +17,7 @@ repositories {
 
 plugins {
     `java-library`
-    id("maven-publish")
+    `maven-publish`
     id("com.google.protobuf") version("0.9.4")
 }
 
@@ -25,15 +25,16 @@ dependencies {
     compileOnly(libs.nebula.lint)
 
     compileOnly(libs.jackson.annotations)
-
     implementation(libs.jackson.databind)
 
     implementation(libs.cryptobox4j)
     implementation(libs.javax.validation)
     implementation(libs.jdbi3.sqlobject)
-    implementation(libs.protobuf.java)
 
-    api(libs.cryptobox4j)
+    runtimeOnly(libs.protobuf.gradle)
+    implementation(libs.protobuf.java)
+    implementation(libs.protobuf.java.util)
+    implementation(libs.protobuf.protoc)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
@@ -43,16 +44,7 @@ dependencies {
     testImplementation(libs.slf4j.simple)
 
     implementation(libs.flyway.gradle)
-    implementation(libs.flyway.core)
-
     testImplementation(libs.flyway.gradle)
-    testImplementation(libs.flyway.core)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_9
-    withSourcesJar()
-    withJavadocJar()
 }
 
 protobuf {
@@ -85,7 +77,30 @@ publishing {
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.named<Test>("test") {
+
+    useJUnitPlatform()
+
+    maxParallelForks = 1
+
+    testLogging {
+        showStandardStreams = true
+        showExceptions = true
+
+        events("passed")
+    }
+}
+
 tasks.withType<JavaCompile>() {
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
     options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf(
         "-Xlint:-options",
@@ -98,18 +113,5 @@ tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
     if (JavaVersion.current().isJava8Compatible) {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")
-    }
-}
-
-tasks.named<Test>("test") {
-    useJUnitPlatform()
-
-    maxParallelForks = 1
-
-    testLogging {
-        showStandardStreams = true
-        showExceptions = true
-
-        events("passed")
     }
 }

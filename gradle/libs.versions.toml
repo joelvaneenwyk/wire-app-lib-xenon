@@ -3,7 +3,7 @@
 
 [versions]
 cryptobox4j = "1.4.0"
-flyway = "10.15.2"
+flyway = "9.15.1"
 grpc = "1.65.0"
 jackson = "2.17.2"
 javax-validation = "2.0.1.Final"
@@ -20,7 +20,6 @@ slf4j-simple = "2.0.13"
 android = { module = "com.android.tools.build:gradle", version = "8.5.0" }
 binaryCompatibilityValidator = { module = "org.jetbrains.kotlinx.binary-compatibility-validator:org.jetbrains.kotlinx.binary-compatibility-validator.gradle.plugin", version = "0.15.1" }
 cryptobox4j = { module = "com.wire:cryptobox4j", version.ref = "cryptobox4j" }
-flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-gradle = { module = "org.flywaydb:flyway-gradle-plugin", version.ref = "flyway" }
 grpc-genJava = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
 grpc-netty = { module = "io.grpc:grpc-netty", version.ref = "grpc" }
@@ -37,6 +36,7 @@ kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "
 nebula-lint = { module = "com.netflix.nebula:gradle-lint-plugin", version.ref = "nebula-lint" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
-protobuf-javaUtil = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
+protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
+protobuf-gradle = { module = "com.google.protobuf:protobuf-gradle-plugin", version = "0.9.4" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j-simple" }
