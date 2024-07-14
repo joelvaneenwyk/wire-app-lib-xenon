@@ -12,6 +12,7 @@ Datasource
 Dejan
 diffplug
 Djava
+Dmaven
 dokka
 dotenv
 Dskip
@@ -60,5 +61,6 @@ stdlib
 swiftpoet
 TASKFILE
 temurin
+USERPROFILE
 vanniktech
 wirebot

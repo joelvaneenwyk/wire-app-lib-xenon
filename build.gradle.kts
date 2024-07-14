@@ -22,15 +22,18 @@ plugins {
 }
 
 dependencies {
-    api(libs.nebula.lint)
-    api(libs.cryptobox4j)
+    compileOnly(libs.nebula.lint)
+
+    compileOnly(libs.jackson.annotations)
+
+    implementation(libs.jackson.databind)
 
     implementation(libs.cryptobox4j)
-    implementation(libs.jackson.annotations)
-    implementation(libs.jackson.databind)
     implementation(libs.javax.validation)
     implementation(libs.jdbi3.sqlobject)
     implementation(libs.protobuf.java)
+
+    api(libs.cryptobox4j)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
@@ -39,9 +42,10 @@ dependencies {
     testImplementation(libs.postgresql)
     testImplementation(libs.slf4j.simple)
 
-    runtimeOnly(libs.flyway.gradle.plugin)
+    runtimeOnly(libs.flyway.gradle)
+    testRuntimeOnly(libs.flyway.gradle)
+
     testImplementation(libs.flyway.core)
-    testRuntimeOnly(libs.flyway.gradle.plugin)
 }
 
 java {
