@@ -32,3 +32,4 @@ package.json
 *.ts
 
 out/
+.m2/
