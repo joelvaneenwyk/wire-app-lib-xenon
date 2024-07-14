@@ -16,18 +16,22 @@ public abstract class DatabaseTestBase {
 
     @BeforeAll
     public static void initiate() throws Exception {
-        String databaseUrlPrefix = defaultIfNull(System.getenv("POSTGRES_URL"), "localhost:5432/postgres");
+        String envPostgresUrl = System.getenv("POSTGRES_URL");
+        String envPostgresUser = System.getenv("POSTGRES_USER");
+        String envPostgresPassword = System.getenv("POSTGRES_PASSWORD");
+
+        String databaseUrlPrefix = envPostgresUrl != null ? envPostgresUrl : "localhost:5432/postgres";
         String databaseUrl = "jdbc:postgresql://" + databaseUrlPrefix;
         assert(databaseUrl != null);
 
-        String user = defaultIfNull(System.getenv("POSTGRES_USER"), "postgres");
-        String password = defaultIfNull(System.getenv("POSTGRES_PASSWORD"), "postgres");
+        String user = envPostgresUser != null ? envPostgresUser : "postgres";
+        String password = envPostgresPassword != null ? envPostgresPassword : "postgres";
 
         Class<?> driverClass = Class.forName("org.postgresql.Driver");
         final Driver driver = (Driver) driverClass.getDeclaredConstructor().newInstance();
         DriverManager.registerDriver(driver);
 
-        jdbi = password != null
+        jdbi = user != null && password != null
                 ? Jdbi.create(databaseUrl, user, password)
                 : Jdbi.create(databaseUrl);
         jdbi.installPlugin(new SqlObjectPlugin());
@@ -35,10 +39,6 @@ public abstract class DatabaseTestBase {
         flyway = Flyway.configure().dataSource(databaseUrl, user, password).baselineOnMigrate(true).load();
 
         flyway.migrate();
-    }
-
-    private static String defaultIfNull(String value, String defaultValue) {
-        return value != null ? value : defaultValue;
     }
 
     @AfterAll
