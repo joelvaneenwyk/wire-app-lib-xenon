@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DAOTest extends DatabaseTestBase {
 
     @Test
-    @SuppressWarnings("unused")
     public void testIdentitiesDAO() {
         final IdentitiesDAO identitiesDAO = jdbi.onDemand(IdentitiesDAO.class);
         final String id = UUID.randomUUID().toString();

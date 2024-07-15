@@ -1,7 +1,6 @@
 #
 # Wire App | Xenon
 #
-
 services:
   db:
     image: postgres:15
