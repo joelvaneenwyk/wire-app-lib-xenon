@@ -3,7 +3,6 @@
  */
 
 import com.google.protobuf.gradle.id
-import org.gradle.kotlin.dsl.`java-library`
 
 group = "com.wire"
 version = "1.5.6"
@@ -18,33 +17,32 @@ repositories {
 plugins {
     `java-library`
     `maven-publish`
-    id("com.google.protobuf") version("0.9.4")
+    signing
+    id("com.google.protobuf") version ("0.9.4")
 }
 
 dependencies {
-    compileOnly(libs.nebula.lint)
-
-    compileOnly(libs.jackson.annotations)
+    implementation(libs.cryptobox4j)
+    implementation(libs.jackson.annotations)
     implementation(libs.jackson.databind)
 
-    implementation(libs.cryptobox4j)
     implementation(libs.javax.validation)
+
     implementation(libs.jdbi3.sqlobject)
 
-    runtimeOnly(libs.protobuf.gradle)
+    implementation(libs.protobuf.gradle)
     implementation(libs.protobuf.java)
     implementation(libs.protobuf.java.util)
     implementation(libs.protobuf.protoc)
 
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
-    testRuntimeOnly(libs.junit.platform.launcher)
 
     testImplementation(libs.postgresql)
     testImplementation(libs.slf4j.simple)
-
-    implementation(libs.flyway.gradle)
     testImplementation(libs.flyway.gradle)
+
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 protobuf {
@@ -72,44 +70,77 @@ protobuf {
 }
 
 publishing {
-    publications.create<MavenPublication>("maven") {
-        from(components["java"])
+    publications {
+        all {
+            group = "com.wire"
+            version = "1.5.6"
+        }
+        create("OSSRH", MavenPublication::class) {
+            from(components["java"])
+            pom {
+                name.set("wire-app-lib-xenon")
+                description.set("Xenon")
+            }
+        }
+        create("GitHubPackages", MavenPublication::class) {
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/joelvaneenwyk/wire-app-lib-xenon")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: "joelvaneenwyk"
+                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+            }
+        }
+        maven {
+            name = "OSSRH"
+            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = System.getenv("MAVEN_USERNAME") ?: "joelvaneenwyk"
+                password = System.getenv("MAVEN_PASSWORD") ?: project.findProperty("gpr.key") as String?
+            }
+        }
     }
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
     withSourcesJar()
     withJavadocJar()
 }
 
+tasks.withType<JavaCompile> {
+    sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+    targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(
+        listOf(
+            "-Xlint:-options", "-Xlint:deprecation", "-Xmaxerrs", "1000", "-Xmaxwarns", "1000"
+        )
+    )
+}
+
 tasks.named<Test>("test") {
-
+    sourceSets {
+        named("test") {
+            resources {
+                srcDir("src/test/resources")
+            }
+        }
+    }
+    maxParallelForks = 2
     useJUnitPlatform()
-
-    maxParallelForks = 1
-
     testLogging {
         showStandardStreams = true
         showExceptions = true
-
         events("passed")
     }
 }
 
-tasks.withType<JavaCompile>() {
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-    options.encoding = "UTF-8"
-    options.compilerArgs.addAll(listOf(
-        "-Xlint:-options",
-        "-Xlint:deprecation",
-        "-Xmaxerrs", "1000",
-        "-Xmaxwarns", "1000"))
-}
-
-tasks.withType<Javadoc>() {
+tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
     if (JavaVersion.current().isJava8Compatible) {
         (options as StandardJavadocDocletOptions).addStringOption("Xdoclint:none", "-quiet")

@@ -96,8 +96,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish
+        run: ./gradlew clean publish
         env:
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Apache Maven Central
