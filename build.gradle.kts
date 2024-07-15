@@ -20,7 +20,8 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.google.protobuf") version ("0.9.4")
+    id("com.google.protobuf") version("0.9.4")
+    id("org.sonatype.gradle.plugins.scan") version("2.8.2")
 }
 
 dependencies {
@@ -88,7 +89,8 @@ publishing {
     }
 
     repositories {
-        val org = System.getenv("ORG") ?: "joelvaneenwyk"
+        val allowSonaType = (System.getenv("ALLOW_SONATYPE") ?: "false") == "true"
+        val org = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.org") as String? ?: "joelvaneenwyk"
         val token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
 
         maven {
@@ -99,12 +101,15 @@ publishing {
                 password = System.getenv("GITHUB_TOKEN") ?: token
             }
         }
-        maven {
-            name = "OSSRH"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME") ?: org
-                password = System.getenv("MAVEN_PASSWORD") ?: token
+
+        if (allowSonaType) {
+            maven {
+                name = "OSSRH"
+                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = System.getenv("MAVEN_USERNAME") ?: org
+                    password = System.getenv("MAVEN_PASSWORD") ?: token
+                }
             }
         }
     }

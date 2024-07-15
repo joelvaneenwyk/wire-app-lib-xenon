@@ -109,17 +109,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_ACTOR: ${{ github.actor }}
           MAVEN_OPTS: >-
-            --add-opens=java.base/java.util=ALL-UNNAMED
             --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
             --add-opens=java.base/java.text=ALL-UNNAMED
+            --add-opens=java.base/java.util=ALL-UNNAMED
             --add-opens=java.desktop/java.awt.font=ALL-UNNAMED
-          # Disabling for now which will effectively disable publishing to Maven Central
-          # MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-          # MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
 
   analyze:
     needs: [build]
-    name: Analyze (${{ matrix.language }})
+    name: 'Analyze // ${{ matrix.language }}'
     runs-on: 'ubuntu-latest'
     strategy:
       fail-fast: false
