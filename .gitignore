@@ -33,3 +33,5 @@ package.json
 
 out/
 .m2/
+
+.env
