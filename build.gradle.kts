@@ -75,33 +75,34 @@ publishing {
             group = "com.wire"
             version = "1.5.6"
         }
-        create("OSSRH", MavenPublication::class) {
+
+        create("xenon", MavenPublication::class) {
             from(components["java"])
             pom {
                 name.set("wire-app-lib-xenon")
                 description.set("Xenon")
             }
         }
-        create("GitHubPackages", MavenPublication::class) {
-            from(components["java"])
-        }
     }
 
     repositories {
+        val org = System.getenv("ORG") ?: "joelvaneenwyk"
+        val token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/joelvaneenwyk/wire-app-lib-xenon")
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: "joelvaneenwyk"
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+                username = System.getenv("GITHUB_ACTOR") ?: org
+                password = System.getenv("GITHUB_TOKEN") ?: token
             }
         }
         maven {
             name = "OSSRH"
             url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
             credentials {
-                username = System.getenv("MAVEN_USERNAME") ?: "joelvaneenwyk"
-                password = System.getenv("MAVEN_PASSWORD") ?: project.findProperty("gpr.key") as String?
+                username = System.getenv("MAVEN_USERNAME") ?: org
+                password = System.getenv("MAVEN_PASSWORD") ?: token
             }
         }
     }
