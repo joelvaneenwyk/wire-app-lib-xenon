@@ -4,9 +4,11 @@
 
 import com.google.protobuf.gradle.id
 
-group = "com.wire"
-version = "1.5.6"
-description = "Xenon"
+val xenon_version = "1.5.6-SNAPSHOT"
+val xenon_group_id = "com.wire"
+
+version = xenon_version
+group = xenon_group_id
 
 repositories {
     gradlePluginPortal()
@@ -72,8 +74,8 @@ protobuf {
 publishing {
     publications {
         all {
-            group = "com.wire"
-            version = "1.5.6"
+            version = xenon_version
+            group = xenon_group_id
         }
 
         create("xenon", MavenPublication::class) {
