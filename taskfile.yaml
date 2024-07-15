@@ -42,6 +42,26 @@ tasks:
     cmds:
       - task: gradle-test
 
+  publish:
+    vars:
+      GITHUB_ACTOR: joelvaneenwyk
+    cmds:
+      - cmd: |
+          "{{ fromSlash .GRADLE_EXE }}" publish
+
+  maven-publish:
+    cmds:
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" -DskipTests clean deploy
+
+  analyze-dependencies:
+    aliases: [deps]
+    cmds:
+      - cmd: |
+          "{{ fromSlash .GRADLE_EXE }}" dependencies
+      - cmd: |
+          {{.RUN}} "{{fromSlash .MVN}}" dependency:analyze
+
   gradle-test:
     aliases: [gt, test-gradle]
     internal: true
@@ -83,11 +103,6 @@ tasks:
       - defer: { task: db-stop }
       - cmd: |
           {{.RUN}} "{{fromSlash .MVN}}" test
-
-  publish:
-    cmds:
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" -DskipTests clean deploy
 
   db-start:
     internal: true
