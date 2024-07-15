@@ -12,6 +12,10 @@
   <description>Base Wire Bots Library</description>
   <url>https://wire.com/</url>
 
+  <scm>
+    <url>https://github.com/joelvaneenwyk/wire-app-lib-xenon</url>
+  </scm>
+
   <licenses>
     <license>
       <name>GNU General Public License v3.0</name>
@@ -36,10 +40,6 @@
       <timezone>UTC+01:00</timezone>
     </developer>
   </developers>
-
-  <scm>
-    <url>https://github.com/wireapp/xenon</url>
-  </scm>
 
   <distributionManagement>
     <snapshotRepository>
