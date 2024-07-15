@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program. If not, see http://www.gnu.org/licenses/.
 //
-
 package com.wire.xenon;
 
 import com.waz.model.Messages;
@@ -30,18 +29,20 @@ import java.util.Collections;
 import java.util.UUID;
 
 public abstract class MessageHandlerBase {
-
     /**
      * @param newBot       Initialization object for new Bot instance
-     *                     -  id          : The unique user ID for the bot.
-     *                     -  client      : The client ID for the bot.
-     *                     -  origin      : The profile of the user who requested the bot, as it is returned from GET /bot/users.
-     *                     -  conversation: The convId as seen by the bot and as returned from GET /bot/convId.
-     *                     -  token       : The bearer token that the bot must use on inbound requests.
-     *                     -  locale      : The preferred locale for the bot to use, in form of an IETF language tag.
+     *                         <ul>
+     *                         <li>id - The unique user ID for the bot.</li>
+     *                         <li>client - The client ID for the bot.</li>
+     *                         <li>origin - The profile of the user who requested the bot, as it is returned from GET
+     *                         /bot/users.</li>
+     *                         <li>conversation - The convId as seen by the bot and as returned from GET /bot/convId.</li>
+     *                         <li>token - The bearer token that the bot must use on inbound requests.</li>
+     *                         <li>locale - The preferred locale for the bot to use, in form of an IETF language tag.</li>
+     *                         </ul>
      * @param serviceToken Service token obtained from the Wire BE when the service was created
-     * @return If TRUE is returned new bot instance is created for this conversation
-     * If FALSE is returned this service declines to create new bot instance for this conversation
+     * @return <code>true</code> if new bot instance is created for this conversation; <code>false</code> if service
+     *         declines to create new bot instance for this conversation
      */
     public boolean onNewBot(NewBot newBot, String serviceToken) {
         return true;
@@ -115,7 +116,7 @@ public abstract class MessageHandlerBase {
 
     /**
      * @return Bot's Accent Colour index (from [1 - 7]) that will be used for this conversation. If 0 is returned the
-     * default one will be used
+     *         default one will be used
      */
     public int getAccentColour() {
         return 0;
@@ -187,7 +188,7 @@ public abstract class MessageHandlerBase {
             int minAvailable = 8 * size;
             if (minAvailable > 0) {
                 ArrayList<Integer> availablePrekeys = client.getAvailablePrekeys();
-                availablePrekeys.remove(Integer.valueOf(65535)); //remove the last prekey
+                availablePrekeys.remove(Integer.valueOf(65535)); // remove the last prekey
                 if (!availablePrekeys.isEmpty() && availablePrekeys.size() < minAvailable) {
                     Integer lastKeyOffset = Collections.max(availablePrekeys);
                     ArrayList<PreKey> keys = client.newPreKeys(lastKeyOffset + 1, minAvailable);
@@ -214,7 +215,6 @@ public abstract class MessageHandlerBase {
 
     public void onButtonClick(WireClient client, ButtonActionMessage msg) {
         ButtonActionConfirmation confirmation = new ButtonActionConfirmation(msg.getReference(), msg.getButtonId());
-
         try {
             client.send(confirmation, msg.getUserId());
         } catch (Exception e) {
