@@ -4,12 +4,12 @@ version: '3'
 
 vars:
   REDIRECT_TO_NULL: '{{ if eq OS "windows" }}> nul 2>&1{{ else }}>/dev/null{{ end }}'
+  RUN: '{{ if eq OS "windows" }}cmd.exe /D /E:ON /C{{ else }}bash -c{{ end }}'
+
   GRADLE_EXE: '{{.TASKFILE_DIR}}/gradlew{{ if eq OS "windows" }}.bat{{end}}'
+  GRADLE: '{{.RUN}} "{{fromSlash .GRADLE_EXE}}"'
   MAVEN_POM: '{{.TASKFILE_DIR}}/pom.xml'
   MAVEN_EXE:  "scoop/apps/maven/current/bin/mvn.cmd"
-  MVN_SCOOP: "{{ joinPath .USERPROFILE .MAVEN_EXE }}"
-  MVN: '{{ if eq OS "windows" }}set "MAVEN_OPTS=" && call {{.MVN_SCOOP}}{{ else }}mvn{{ end }}'
-  RUN: '{{ if eq OS "windows" }}cmd.exe /D /E:ON /C{{ else }}bash -c{{ end }}'
 
 dotenv: [.env]
 
@@ -47,20 +47,40 @@ tasks:
       GITHUB_ACTOR: joelvaneenwyk
     cmds:
       - cmd: |
-          "{{ fromSlash .GRADLE_EXE }}" publish
+          {{.GRADLE}} publish
 
-  maven-publish:
+  mvn:
+    desc: Run Maven commands
+    aliases: [maven]
+    required: [MVN_ARGS]
+    vars:
+      MVN_INPUT_ARGS: '{{ coalesce .MVN_ARGS .CLI_ARGS | default "" }}'
+      MVN_SCOOP: '{{ joinPath .USERPROFILE "scoop/apps/maven/current/bin/mvn.cmd" }}'
     cmds:
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" -DskipTests clean deploy
+      - cmd: >-
+          {{.RUN}}
+          "
+          set "MAVEN_OPTS=" &&
+          set "MAVEN_ARGS=" &&
+          set "MAVEN_BATCH_ECHO=on" &&
+          call "{{ fromSlash .MVN_SCOOP | shellQuote }}"
+          -f "{{ fromSlash .MAVEN_POM | shellQuote }}"
+          {{ .MVN_INPUT_ARGS }}
+          "
+        platforms: [windows]
+      - cmd: >-
+          mvn
+          -f "{{ fromSlash .MAVEN_POM }}"
+          {{ .MVN_INPUT_ARGS }}
+        platforms: [linux, darwin]
 
   analyze-dependencies:
     aliases: [deps]
     cmds:
       - cmd: |
-          "{{ fromSlash .GRADLE_EXE }}" dependencies
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" dependency:analyze
+          {{.GRADLE}} dependencies
+      - task: mvn
+        vars: { MVN_ARGS: dependency:analyze }
 
   gradle-test:
     aliases: [gt, test-gradle]
@@ -77,9 +97,9 @@ tasks:
     aliases: [gradle, gradlew, g]
     cmds:
       - cmd: >-
-          "{{ fromSlash .GRADLE_EXE }}" clean
+          {{.GRADLE}} clean
       - cmd: >-
-          "{{ fromSlash .GRADLE_EXE }}" build
+          {{.GRADLE}} build
           -x test
           --no-build-cache
           --dependency-verification=strict
@@ -87,12 +107,12 @@ tasks:
           --rerun-tasks
 
   maven-build:
-    aliases: [mvn, m, maven]
+    aliases: [maven-b, mvn-build, mvnb, mb]
     cmds:
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" test-compile
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" -f "{{ fromSlash .MAVEN_POM }}" package -DskipTests
+      - task: mvn
+        vars: { MVN_ARGS: 'test-compile' }
+      - task: mvn
+        vars: { MVN_ARGS: 'package -DskipTests' }
       - task: maven-test
 
   maven-test:
@@ -101,8 +121,13 @@ tasks:
     cmds:
       - task: db-start
       - defer: { task: db-stop }
-      - cmd: |
-          {{.RUN}} "{{fromSlash .MVN}}" test
+      - task: mvn
+        vars: { MVN_ARGS: 'test' }
+
+  maven-publish:
+    cmds:
+      - task: mvn
+        vars: { MVN_ARGS: '-DskipTests clean deploy' }
 
   db-start:
     internal: true
@@ -118,7 +143,9 @@ tasks:
           docker compose stop db
         ignore_error: true
 
-  format:
+  npm-prettier-format:
+    desc: Format all Java files using Prettier
+    aliases: [fmt, format, prettier]
     deps: [npm-clean]
     silent: true
     cmds:
