@@ -6,6 +6,8 @@
 
 .git/
 
+.build/
+
 *.iml
 !/xenon.iml
 
