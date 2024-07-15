@@ -15,5 +15,6 @@
   },
   "java.cleanup.actions": ["renameFileToType"],
   "java.configuration.updateBuildConfiguration": "automatic",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.format.settings.url": ".vscode/java-formatter.xml"
 }
