@@ -4,9 +4,11 @@
 
 import com.google.protobuf.gradle.id
 
-group = "com.wire"
-version = "1.5.6"
-description = "Xenon"
+val xenon_version = "1.5.6-SNAPSHOT"
+val xenon_group_id = "com.wire"
+
+version = xenon_version
+group = xenon_group_id
 
 repositories {
     gradlePluginPortal()
@@ -18,7 +20,8 @@ plugins {
     `java-library`
     `maven-publish`
     signing
-    id("com.google.protobuf") version ("0.9.4")
+    id("com.google.protobuf") version("0.9.4")
+    id("org.sonatype.gradle.plugins.scan") version("2.8.2")
 }
 
 dependencies {
@@ -72,36 +75,41 @@ protobuf {
 publishing {
     publications {
         all {
-            group = "com.wire"
-            version = "1.5.6"
+            version = xenon_version
+            group = xenon_group_id
         }
-        create("OSSRH", MavenPublication::class) {
+
+        create("xenon", MavenPublication::class) {
             from(components["java"])
             pom {
                 name.set("wire-app-lib-xenon")
                 description.set("Xenon")
             }
         }
-        create("GitHubPackages", MavenPublication::class) {
-            from(components["java"])
-        }
     }
 
     repositories {
+        val allowSonaType = (System.getenv("ALLOW_SONATYPE") ?: "false") == "true"
+        val org = System.getenv("GITHUB_ACTOR") ?: project.findProperty("gpr.org") as String? ?: "joelvaneenwyk"
+        val token = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/joelvaneenwyk/wire-app-lib-xenon")
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: "joelvaneenwyk"
-                password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("gpr.key") as String?
+                username = System.getenv("GITHUB_ACTOR") ?: org
+                password = System.getenv("GITHUB_TOKEN") ?: token
             }
         }
-        maven {
-            name = "OSSRH"
-            url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME") ?: "joelvaneenwyk"
-                password = System.getenv("MAVEN_PASSWORD") ?: project.findProperty("gpr.key") as String?
+
+        if (allowSonaType) {
+            maven {
+                name = "OSSRH"
+                url = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                credentials {
+                    username = System.getenv("MAVEN_USERNAME") ?: org
+                    password = System.getenv("MAVEN_PASSWORD") ?: token
+                }
             }
         }
     }
