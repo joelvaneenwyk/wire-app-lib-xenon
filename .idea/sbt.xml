@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ScalaSbtSettings">
     <option name="customLauncherPath" />
-    <option name="customVMPath" />
+    <option name="customVMEnabled" value="true" />
+    <option name="customVMPath" value="$USER_HOME$/scoop/apps/microsoft-lts-jdk/current" />
   </component>
 </project>

@@ -1,4 +1,7 @@
 {
+  "yaml-embedded-languages.include": {
+    "yaml": "bash"
+  },
   "java.autobuild.enabled": false,
   "[kotlin]": {
     "editor.defaultFormatter": "vscjava.vscode-gradle"
