@@ -13,7 +13,7 @@ junit-platform-launcher = "1.10.3"
 kotlin = "2.0.0"
 nebula-lint = "latest.release"
 postgresql = "42.7.3"
-protobuf = "3.24.3"
+protobuf = "4.27.3"
 slf4j-simple = "2.0.13"
 
 [libraries]
