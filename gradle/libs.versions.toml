@@ -3,7 +3,7 @@
 
 [versions]
 cryptobox4j = "1.4.0"
-flyway = "9.15.1"
+flyway = "10.15.2"
 grpc = "1.65.0"
 jackson = "2.17.2"
 javax-validation = "2.0.1.Final"
