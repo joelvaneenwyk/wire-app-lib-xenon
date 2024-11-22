@@ -4,7 +4,7 @@
 [versions]
 cryptobox4j = "1.4.0"
 flyway = "9.15.1"
-grpc = "1.65.0"
+grpc = "1.65.1"
 jackson = "2.17.2"
 javax-validation = "2.0.1.Final"
 jdbi3-sqlobject = "3.45.2"
